@@ -14,7 +14,7 @@
                             </div>
                         @endif
 
-                        {{ __('Inicia sesión') }}
+                        {{ __('Inicia sesión CAMILO') }}
                     </div>
                 </div>
             </div>
