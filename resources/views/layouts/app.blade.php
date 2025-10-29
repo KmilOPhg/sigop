@@ -112,6 +112,7 @@
                         </li>
 
                         <!-- Pestaña 5 -->
+                        @role('admin')
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle text-white" href="#" id="menuAyuda" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Auditoria
@@ -123,6 +124,7 @@
                                 <li><a class="dropdown-item" href="#">Permisos</a></li>
                             </ul>
                         </li>
+                        @endrole
                     </ul>
                 </div>
             </nav>

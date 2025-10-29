@@ -19,9 +19,9 @@ Route::get('/', [PublicControler::class, 'index']);
 Route::get('/empresa', [PublicControler::class, 'empresa']);
 
 //Rutas admin
-Route::prefix('admin')->middleware(['auth', 'role:admin'])->group(function () {
+Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->group(function () {
     //admin/dashboard
-    Route::get('/dashboard', [HomeController::class, 'adminDashboard'])->name('admin.dashboard');
+    Route::get('/dashboard', [HomeController::class, 'adminDashboard'])->name('dashboard');
     //admin/users
     Route::resource('/users', UserController::class);
 });

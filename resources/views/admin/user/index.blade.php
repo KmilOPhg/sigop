@@ -7,7 +7,7 @@
                 <div class="card">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <b>Users</b>
-                        <a href="{{ route('admin.user.create') }}">New User</a>
+                        <a href="{{ route('admin.users.create') }}">New User</a>
                     </div>
                     <div class="card-body">
                         <table>
@@ -27,8 +27,8 @@
                                     <td>{{ implode(', ', $user->getPermissionNames()->toArray()) }}</td>
                                     <td>{{ $user->email }}</td>
                                     <td>
-                                        <a href="{{ route('admin.user.edit', $user->id) }}">Edit</a>
-                                        <form action="{{ route('admin.user.destroy', $user->id) }}" method="POST" style="display:inline;">
+                                        <a href="{{ route('admin.users.edit', $user->id) }}">Edit</a>
+                                        <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST" style="display:inline;">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" onclick="return confirm('¿Seguro?')">Delete</button>

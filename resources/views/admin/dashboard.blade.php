@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('content')
     <div class="container">
@@ -15,6 +15,9 @@
                         @endif
 
                         {{ __('Iniciaste como admin') }}
+                        <div class="col-sm-3">
+                            <a href="{{ route('admin.users.index') }}" class="btn btn-primary">Gestionar Usuarios</a>
+                        </div>
                     </div>
                 </div>
             </div>
