@@ -66,64 +66,68 @@
             </div>
         </nav>
         <!-- Barra horizontal con pestañas -->
-        <nav class="navbar navbar-expand-md navbar-dark bg-primary shadow-sm">
-            <div class="container">
-                <ul class="navbar-nav mx-auto">
-                    <!-- Pestaña 1 -->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle text-white" href="#" id="menuInicio" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Planeación
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="menuInicio">
 
-                        </ul>
-                    </li>
+        @if(Auth::check())
+            <nav class="navbar navbar-expand-md navbar-dark bg-primary shadow-sm">
+                <div class="container">
+                    <ul class="navbar-nav mx-auto">
+                        <!-- Pestaña 1 -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-white" href="#" id="menuInicio" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Planeación
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="menuInicio">
 
-                    <!-- Pestaña 2 -->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle text-white" href="#" id="menuProyectos" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Pedidos
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="menuProyectos">
+                            </ul>
+                        </li>
 
-                        </ul>
-                    </li>
+                        <!-- Pestaña 2 -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-white" href="#" id="menuProyectos" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Pedidos
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="menuProyectos">
 
-                    <!-- Pestaña 3 -->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle text-white" href="#" id="menuReportes" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Inventarios
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="menuReportes">
+                            </ul>
+                        </li>
 
-                        </ul>
-                    </li>
+                        <!-- Pestaña 3 -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-white" href="#" id="menuReportes" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Inventarios
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="menuReportes">
 
-                    <!-- Pestaña 4 -->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle text-white" href="#" id="menuConfiguracion" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Reportes
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="menuConfiguracion">
+                            </ul>
+                        </li>
 
-                        </ul>
-                    </li>
+                        <!-- Pestaña 4 -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-white" href="#" id="menuConfiguracion" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Reportes
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="menuConfiguracion">
 
-                    <!-- Pestaña 5 -->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle text-white" href="#" id="menuAyuda" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Auditoria
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="menuAyuda">
-                            <li><a class="dropdown-item" href="#">Crear Usuario</a></li>
-                            <li><a class="dropdown-item" href="#">Restablecer contraseña</a></li>
-                            <li><a class="dropdown-item" href="#">Roles</a></li>
-                            <li><a class="dropdown-item" href="#">Permisos</a></li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-        </nav>
+                            </ul>
+                        </li>
+
+                        <!-- Pestaña 5 -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-white" href="#" id="menuAyuda" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Auditoria
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="menuAyuda">
+                                <li><a class="dropdown-item" href="#">Crear Usuario</a></li>
+                                <li><a class="dropdown-item" href="#">Restablecer contraseña</a></li>
+                                <li><a class="dropdown-item" href="#">Roles</a></li>
+                                <li><a class="dropdown-item" href="#">Permisos</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        @endif
+
 
         <main class="py-4">
             @yield('content')
