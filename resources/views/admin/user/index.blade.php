@@ -10,6 +10,7 @@
                         <a href="{{ route('admin.users.create') }}">New User</a>
                     </div>
                     <div class="card-body">
+                        @include('partials.errorsuccess')
                         <table class="table table-bordered table-hover align-middle text-center shadow-sm w-100" style="table-layout: fixed;">
                             <thead class="table-primary">
                             <tr>
@@ -44,7 +45,9 @@
                                         @php
                                             $permissions = $user->getPermissionNames();
                                         @endphp
-                                        @if ($permissions->isNotEmpty())
+                                        @if ($user->hasRole('admin'))
+                                            <span class="badge bg-info text-dark mb-1">Acceso total</span>
+                                        @elseif ($permissions->isNotEmpty())
                                             @foreach ($permissions as $permission)
                                                 <span class="badge bg-info text-dark mb-1">{{ $permission }}</span>
                                             @endforeach
@@ -80,8 +83,6 @@
                             @endforelse
                             </tbody>
                         </table>
-
-
                     </div>
                 </div>
             </div>
