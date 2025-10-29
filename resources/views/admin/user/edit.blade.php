@@ -4,7 +4,7 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
-                <form action="{{ route('admin.user.update,$user') }}" method="post">
+                <form action="{{ route('admin.users.update', $user) }}" method="post">
                     <div class="card">
                         <div class="card-header d-flex justify-content-between align-items-center">
                             <b>Actualzar usuario</b>
@@ -42,7 +42,6 @@
                                     </label>
                                 @endforeach
                             </div>
-                            <button type="submit" class="btn btn-primary">Crear Usuario</button>
                         </div>
                     </div>
                 </form>
