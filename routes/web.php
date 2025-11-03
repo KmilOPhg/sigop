@@ -23,7 +23,12 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     //admin/dashboard
     Route::get('/dashboard', [HomeController::class, 'adminDashboard'])->name('dashboard');
     //admin/users
-    Route::resource('/users', UserController::class);
+    Route::get('/users', [UserController::class, 'verUsuarios'])->name('users.listar');
+    Route::get('/users/crear', [UserController::class, 'crearUsuarosForm'])->name('users.crear.form');
+    Route::post('/users', [UserController::class, 'crearUsuarios'])->name('users.guardar');
+    Route::get('/users/{user}', [UserController::class, 'editarUsuarios'])->name('users.editar.form');
+    Route::put('/users/{user}', [UserController::class, 'actualizarUsuarios'])->name('users.actualizar');
+    Route::delete('/users/{user}', [UserController::class, 'eliminarUsuarios'])->name('users.eliminar');
 });
 
 //Rutas editor

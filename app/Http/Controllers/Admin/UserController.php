@@ -13,7 +13,7 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function verUsuarios()
     {
         $users = User::with('roles', 'permissions')->get();
         return view('admin.user.index', compact('users'));
@@ -22,7 +22,7 @@ class UserController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function crearUsuarosForm()
     {
         $roles = Role::all();
         $permissions = Permission::all();
@@ -33,7 +33,7 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function crearUsuarios(Request $request)
     {
         $request->validate([
             'name' => 'required|string|max:255',
@@ -52,21 +52,13 @@ class UserController extends Controller
         $user->syncRoles($request->roles ?? []);
         $user->syncPermissions($request->permissions ?? []);
 
-        return redirect()->route('admin.users.index')->with('success', 'Usuario creado correctamente');
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(User $user)
-    {
-
+        return redirect()->route('admin.users.listar')->with('success', 'Usuario creado correctamente');
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(User $user)
+    public function editarUsuarios(User $user)
     {
         $roles = Role::all();
         $permissions = Permission::all();
@@ -77,7 +69,7 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, User $user)
+    public function actualizarUsuarios(Request $request, User $user)
     {
         $request->validate([
             'name' => 'required|string|max:255',
@@ -96,15 +88,15 @@ class UserController extends Controller
         $user->syncRoles($request->roles ?? []);
         $user->syncPermissions($request->permissions ?? []);
 
-        return redirect()->route('admin.users.index')->with('success', 'Usuario actualizado correctamente');
+        return redirect()->route('admin.users.listar')->with('success', 'Usuario actualizado correctamente');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(User $user)
+    public function eliminarUsuarios(User $user)
     {
         $user->delete();
-        return redirect()->route('admin.users.index')->with('success', 'Usuario eliminado correctamente');
+        return redirect()->route('admin.users.listar')->with('success', 'Usuario eliminado correctamente');
     }
 }

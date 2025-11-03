@@ -4,11 +4,11 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
-                <form action="{{ route('admin.users.update', $user) }}" method="post">
+                <form action="{{ route('admin.users.actualizar', $user) }}" method="post">
                     <div class="card">
                         <div class="card-header d-flex justify-content-between align-items-center">
                             <b>Actualzar usuario</b>
-                            <a href="{{ route('admin.users.index') }}">Regresar</a>
+                            <a href="{{ route('admin.users.listar') }}">Regresar</a>
                             <button type="submit">Actualizar</button>
                         </div>
                         <div class="card-body">

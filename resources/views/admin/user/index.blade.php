@@ -7,7 +7,7 @@
                 <div class="card">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <b>Users</b>
-                        <a href="{{ route('admin.users.create') }}">New User</a>
+                        <a href="{{ route('admin.users.listar') }}">New User</a>
                     </div>
                     <div class="card-body">
                         @include('partials.errorsuccess')
@@ -62,11 +62,11 @@
                                     <!-- Acciones -->
                                     <td>
                                         <div class="d-flex justify-content-center gap-2">
-                                            <a href="{{ route('admin.users.edit', $user->id) }}" class="btn btn-sm btn-warning d-flex align-items-center gap-1">
+                                            <a href="{{ route('admin.users.editar.form', $user->id) }}" class="btn btn-sm btn-warning d-flex align-items-center gap-1">
                                                 <i class="bi bi-pencil-square"></i> Editar
                                             </a>
 
-                                            <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST" onsubmit="return confirm('¿Seguro que deseas eliminar este usuario?')">
+                                            <form action="{{ route('admin.users.eliminar', $user->id) }}" method="POST" onsubmit="return confirm('¿Seguro que deseas eliminar este usuario?')">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="btn btn-sm btn-danger d-flex align-items-center gap-1">

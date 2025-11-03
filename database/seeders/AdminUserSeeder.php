@@ -20,6 +20,13 @@ class AdminUserSeeder extends Seeder
             'password' => Hash::make('admin')
         ]);
 
+        $editor = User::create([
+            'name' => 'Editor User',
+            'email' => 'editor@editor.com',
+            'password' => Hash::make('editor')
+        ]);
+
         $admin->assignRole('admin');
+        $editor->assignRole('editor');
     }
 }

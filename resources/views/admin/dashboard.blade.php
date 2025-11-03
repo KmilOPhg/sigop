@@ -16,7 +16,7 @@
 
                         {{ __('Iniciaste como admin') }}
                         <div class="col-sm-3">
-                            <a href="{{ route('admin.users.index') }}" class="btn btn-primary">Gestionar Usuarios</a>
+                            <a href="{{ route('admin.users.listar') }}" class="btn btn-primary">Gestionar Usuarios</a>
                         </div>
                     </div>
                 </div>

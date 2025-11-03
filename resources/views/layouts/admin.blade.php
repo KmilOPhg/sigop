@@ -117,7 +117,7 @@
                             Auditoria
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="menuAyuda">
-                            <li><a class="dropdown-item" href="{{ route('admin.users.index') }}">Crear Usuario</a></li>
+                            <li><a class="dropdown-item" href="{{ route('admin.users.listar') }}">Crear Usuario</a></li>
                             <li><a class="dropdown-item" href="#">Restablecer contraseña</a></li>
                             <li><a class="dropdown-item" href="#">Roles</a></li>
                             <li><a class="dropdown-item" href="#">Permisos</a></li>
