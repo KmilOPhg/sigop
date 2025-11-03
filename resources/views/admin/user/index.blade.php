@@ -1,90 +1,128 @@
 @extends('layouts.admin')
 
 @section('content')
-    <div class="container">
+    <div class="container py-4">
         <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <b>Users</b>
-                        <a href="{{ route('admin.users.listar') }}">New User</a>
+            <div class="col-lg-10">
+
+                <!-- Tarjeta principal -->
+                <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+
+                    <!-- Encabezado -->
+                    <div class="card-header d-flex justify-content-between align-items-center py-3 text-white"
+                         style="background-color:#2271B4;">
+                        <h4 class="mb-0 fw-bold d-flex align-items-center gap-2">
+                            <i class="bi bi-people-fill"></i> Gestión de Usuarios
+                        </h4>
+                        <a href="{{ route('admin.users.crear.form') }}"
+                           class="btn btn-light btn-sm fw-semibold px-3 py-2 shadow-sm">
+                            <i class="bi bi-person-plus-fill me-1"></i> Crear Usuario
+                        </a>
                     </div>
-                    <div class="card-body">
+
+                    <!-- Cuerpo -->
+                    <div class="card-body bg-light">
                         @include('partials.errorsuccess')
-                        <table class="table table-bordered table-hover align-middle text-center shadow-sm w-100" style="table-layout: fixed;">
-                            <thead class="table-primary">
-                            <tr>
-                                <th style="width: 20%;">Nombre</th>
-                                <th style="width: 20%;">Roles</th>
-                                <th style="width: 20%;">Permisos</th>
-                                <th style="width: 25%;">Email</th>
-                                <th style="width: 20%;">Acciones</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            @forelse ($users as $user)
+
+                        <div class="table-responsive">
+                            <table class="table align-middle table-hover text-center mb-0">
+                                <thead style="background-color:#4AA0E6; color:#fff;">
                                 <tr>
-                                    <td class="text-truncate" title="{{ $user->name }}">{{ $user->name }}</td>
-
-                                    <!-- Roles -->
-                                    <td class="text-start">
-                                        @php
-                                            $roles = $user->getRoleNames();
-                                        @endphp
-                                        @if ($roles->isNotEmpty())
-                                            @foreach ($roles as $role)
-                                                <span class="badge bg-secondary mb-1">{{ $role }}</span>
-                                            @endforeach
-                                        @else
-                                            <span class="text-muted">Sin rol</span>
-                                        @endif
-                                    </td>
-
-                                    <!-- Permisos -->
-                                    <td class="text-start">
-                                        @php
-                                            $permissions = $user->getPermissionNames();
-                                        @endphp
-                                        @if ($user->hasRole('admin'))
-                                            <span class="badge bg-info text-dark mb-1">Acceso total</span>
-                                        @elseif ($permissions->isNotEmpty())
-                                            @foreach ($permissions as $permission)
-                                                <span class="badge bg-info text-dark mb-1">{{ $permission }}</span>
-                                            @endforeach
-                                        @else
-                                            <span class="text-muted">Sin permisos</span>
-                                        @endif
-                                    </td>
-
-                                    <!-- Email -->
-                                    <td class="text-truncate" title="{{ $user->email }}">{{ $user->email }}</td>
-
-                                    <!-- Acciones -->
-                                    <td>
-                                        <div class="d-flex justify-content-center gap-2">
-                                            <a href="{{ route('admin.users.editar.form', $user->id) }}" class="btn btn-sm btn-warning d-flex align-items-center gap-1">
-                                                <i class="bi bi-pencil-square"></i> Editar
-                                            </a>
-
-                                            <form action="{{ route('admin.users.eliminar', $user->id) }}" method="POST" onsubmit="return confirm('¿Seguro que deseas eliminar este usuario?')">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-sm btn-danger d-flex align-items-center gap-1">
-                                                    <i class="bi bi-trash"></i> Eliminar
-                                                </button>
-                                            </form>
-                                        </div>
-                                    </td>
+                                    <th class="text-uppercase small fw-semibold">Nombre</th>
+                                    <th class="text-uppercase small fw-semibold">Roles</th>
+                                    <th class="text-uppercase small fw-semibold">Permisos</th>
+                                    <th class="text-uppercase small fw-semibold">Email</th>
+                                    <th class="text-uppercase small fw-semibold">Acciones</th>
                                 </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="5" class="text-muted">No se encontraron usuarios.</td>
-                                </tr>
-                            @endforelse
-                            </tbody>
-                        </table>
+                                </thead>
+
+                                <tbody>
+                                @forelse ($users as $user)
+                                    <tr class="bg-white border-bottom">
+                                        <!-- Nombre -->
+                                        <td class="fw-semibold text-start ps-3" title="{{ $user->name }}">
+                                            <i class="bi bi-person-circle me-1" style="color:#2271B4;"></i>
+                                            {{ $user->name }}
+                                        </td>
+
+                                        <!-- Roles -->
+                                        <td class="text-start">
+                                            @php $roles = $user->getRoleNames(); @endphp
+                                            @if ($roles->isNotEmpty())
+                                                @foreach ($roles as $role)
+                                                    <span class="badge rounded-pill text-white"
+                                                          style="background-color:#4AA0E6;">
+                                                        {{ ucfirst($role) }}
+                                                    </span>
+                                                @endforeach
+                                            @else
+                                                <span class="text-muted fst-italic">Sin rol</span>
+                                            @endif
+                                        </td>
+
+                                        <!-- Permisos -->
+                                        <td class="text-start">
+                                            @php $permissions = $user->getPermissionNames(); @endphp
+                                            @if ($user->hasRole('admin'))
+                                                <span class="badge rounded-pill text-dark"
+                                                      style="background-color:#F7A61D;">
+                                                    Acceso total
+                                                </span>
+                                            @elseif ($permissions->isNotEmpty())
+                                                @foreach ($permissions as $permission)
+                                                    <span class="badge rounded-pill text-white"
+                                                          style="background-color:#1E9D52;">
+                                                        {{ ucfirst($permission) }}
+                                                    </span>
+                                                @endforeach
+                                            @else
+                                                <span class="text-muted fst-italic">Sin permisos</span>
+                                            @endif
+                                        </td>
+
+                                        <!-- Email -->
+                                        <td class="text-start ps-3 text-muted" title="{{ $user->email }}">
+                                            <i class="bi bi-envelope-at me-1"></i>{{ $user->email }}
+                                        </td>
+
+                                        <!-- Acciones -->
+                                        <td>
+                                            <div class="d-flex justify-content-center flex-wrap gap-2">
+                                                <!-- Editar -->
+                                                <a href="{{ route('admin.users.editar.form', $user->id) }}"
+                                                   class="btn btn-sm text-white fw-semibold d-flex align-items-center gap-1"
+                                                   style="background-color:#F7A61D;">
+                                                    <i class="bi bi-pencil-square"></i> Editar
+                                                </a>
+
+                                                <!-- Eliminar -->
+                                                <form action="{{ route('admin.users.eliminar', $user->id) }}"
+                                                      method="POST"
+                                                      onsubmit="return confirm('¿Seguro que deseas eliminar este usuario?')">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit"
+                                                            class="btn btn-sm text-white fw-semibold d-flex align-items-center gap-1"
+                                                            style="background-color:#dc3545;">
+                                                        <i class="bi bi-trash3"></i> Inhabilitar
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="5" class="text-muted py-4">
+                                            <i class="bi bi-exclamation-circle me-2"></i>No se encontraron usuarios.
+                                        </td>
+                                    </tr>
+                                @endforelse
+                                </tbody>
+                            </table>
+                        </div>
+
                     </div>
-                </div>
+                </div> <!-- Fin tarjeta -->
             </div>
         </div>
     </div>
