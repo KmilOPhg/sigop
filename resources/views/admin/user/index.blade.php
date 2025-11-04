@@ -24,16 +24,16 @@
                     <div class="card-body bg-light">
                         @include('partials.errorsuccess')
 
-                        <div class="table-responsive">
+                        <div class="table-responsive vh-100">
                             <table class="table align-middle table-hover text-center mb-0">
                                 <thead style="background-color:#4AA0E6; color:#fff;">
                                 <tr>
-                                    <th class="text-uppercase small fw-semibold">Nombre</th>
-                                    <th class="text-uppercase small fw-semibold">Roles</th>
-                                    <th class="text-uppercase small fw-semibold">Permisos</th>
-                                    <th class="text-uppercase small fw-semibold">Email</th>
-                                    <th class="text-uppercase small fw-semibold">Estado</th>
-                                    <th class="text-uppercase small fw-semibold">Acciones</th>
+                                    <th class="text-uppercase small fw-semibold px-3">Nombre</th>
+                                    <th class="text-uppercase small fw-semibold px-3">Roles</th>
+                                    <th class="text-uppercase small fw-semibold px-3">Permisos</th>
+                                    <th class="text-uppercase small fw-semibold px-3">Email</th>
+                                    <th class="text-uppercase small fw-semibold px-3">Estado</th>
+                                    <th class="text-uppercase small fw-semibold px-3">Acciones</th>
                                 </tr>
                                 </thead>
 
@@ -51,10 +51,10 @@
                                             @php $roles = $user->getRoleNames(); @endphp
                                             @if ($roles->isNotEmpty())
                                                 @foreach ($roles as $role)
-                                                    <span class="badge rounded-pill text-white"
+                                                    <span class="badge rounded-pill text-white mb-1"
                                                           style="background-color:#4AA0E6;">
-                                                        {{ ucfirst($role) }}
-                                                    </span>
+                                                    {{ ucfirst($role) }}
+                                                </span>
                                                 @endforeach
                                             @else
                                                 <span class="text-muted fst-italic">Sin rol</span>
@@ -64,18 +64,43 @@
                                         <!-- Permisos -->
                                         <td class="text-start">
                                             @php $permissions = $user->getPermissionNames(); @endphp
+
                                             @if ($user->hasRole('admin'))
-                                                <span class="badge rounded-pill text-dark"
+                                                <span class="badge rounded-pill text-dark mb-1"
                                                       style="background-color:#F7A61D;">
-                                                    Acceso total
-                                                </span>
+                                                Acceso total
+                                            </span>
                                             @elseif ($permissions->isNotEmpty())
-                                                @foreach ($permissions as $permission)
-                                                    <span class="badge rounded-pill text-white"
+                                                @php
+                                                    $shownPermissions = $permissions->take(3);
+                                                    $hiddenPermissions = $permissions->slice(3);
+                                                @endphp
+
+                                                @foreach ($shownPermissions as $permission)
+                                                    <span class="badge rounded-pill text-white mb-1"
                                                           style="background-color:#1E9D52;">
-                                                        {{ ucfirst($permission) }}
-                                                    </span>
+                                                    {{ ucfirst($permission) }}
+                                                </span>
                                                 @endforeach
+
+                                                @if ($hiddenPermissions->isNotEmpty())
+                                                    <div class="dropdown d-inline-block">
+                                                        <button class="btn btn-sm btn-outline-secondary rounded-circle px-2 py-0 dropdown-toggle"
+                                                                type="button"
+                                                                data-bs-toggle="dropdown"
+                                                                aria-expanded="false"
+                                                                title="Ver más permisos">
+                                                            <i class="bi bi-three-dots"></i>
+                                                        </button>
+                                                        <ul class="dropdown-menu p-2 shadow-sm">
+                                                            @foreach ($hiddenPermissions as $perm)
+                                                                <li>
+                                                                    <span class="badge bg-success d-block mb-1">{{ ucfirst($perm) }}</span>
+                                                                </li>
+                                                            @endforeach
+                                                        </ul>
+                                                    </div>
+                                                @endif
                                             @else
                                                 <span class="text-muted fst-italic">Sin permisos</span>
                                             @endif
@@ -124,7 +149,7 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="5" class="text-muted py-4">
+                                        <td colspan="6" class="text-muted py-4">
                                             <i class="bi bi-exclamation-circle me-2"></i>No se encontraron usuarios.
                                         </td>
                                     </tr>
@@ -132,7 +157,6 @@
                                 </tbody>
                             </table>
                         </div>
-
                     </div>
                 </div> <!-- Fin tarjeta -->
             </div>
