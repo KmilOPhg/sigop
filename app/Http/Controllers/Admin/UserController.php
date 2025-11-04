@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
@@ -13,7 +16,7 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function verUsuarios()
+    public function verUsuarios(): Factory|View
     {
         $users = User::with('roles', 'permissions')->where('estado', 'activo')->get();
         return view('admin.user.index', compact('users'));
@@ -22,7 +25,7 @@ class UserController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function crearUsuarosForm()
+    public function crearUsuarosForm(): Factory|View
     {
         $roles = Role::all();
         $permissions = Permission::all();
@@ -33,7 +36,7 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function crearUsuarios(Request $request)
+    public function crearUsuarios(Request $request): RedirectResponse
     {
         $request->validate([
             'name' => 'required|string|max:255',
@@ -58,7 +61,7 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function editarUsuarios(User $user)
+    public function editarUsuarios(User $user): Factory|View
     {
         $roles = Role::all();
         $permissions = Permission::all();
@@ -69,7 +72,7 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function actualizarUsuarios(Request $request, User $user)
+    public function actualizarUsuarios(Request $request, User $user): RedirectResponse
     {
         $request->validate([
             'name' => 'required|string|max:255',
@@ -94,7 +97,7 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function eliminarUsuarios(User $user)
+    public function eliminarUsuarios(User $user): RedirectResponse
     {
         $user->update(['estado' => 'inactivo']);
         return redirect()->route('admin.users.listar')->with('success', 'Usuario eliminado correctamente');
