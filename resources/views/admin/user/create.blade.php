@@ -92,7 +92,7 @@
                                     <div id="permisosContainer" class="row">
                                         @foreach($permissions as $index => $permission)
                                             <div class="col-md-4 col-sm-6 mb-2 permiso-item
-                                            {{ $index >= 6 ? 'd-none permiso-extra' : '' }}">
+                                            {{  $index>= 6 ? 'd-none permiso-extra' : '' }}">
                                                 <div class="form-check">
                                                     <input class="form-check-input" type="checkbox"
                                                            name="permissions[]" id="permission_{{ $permission->id }}"

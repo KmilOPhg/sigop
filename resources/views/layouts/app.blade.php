@@ -16,10 +16,25 @@
 
         <!-- Sección superior (blanca) -->
         <div class="container-fluid py-2 px-4 bg-white d-flex justify-content-between align-items-center border-bottom">
-            <a class="navbar-brand d-flex align-items-center text-decoration-none" href="{{ route('admin.dashboard') }}">
+            @guest()
+            <a class="navbar-brand d-flex align-items-center text-decoration-none" href="{{ route('login') }}">
                 <img src="{{ asset('logo/logo_2.png') }}" alt="Logo" class="me-2" style="height:50px;">
                 <span class="fw-bold fs-4 text-dark">SIGOP</span>
             </a>
+            @endguest
+            @role('admin')
+                <a class="navbar-brand d-flex align-items-center text-decoration-none" href="{{ route('admin.dashboard') }}">
+                    <img src="{{ asset('logo/logo_2.png') }}" alt="Logo" class="me-2" style="height:50px;">
+                    <span class="fw-bold fs-4 text-dark">SIGOP</span>
+                </a>
+            @endrole
+            @role('editor')
+                <a class="navbar-brand d-flex align-items-center text-decoration-none" href="{{ route('editor.dashboard') }}">
+                    <img src="{{ asset('logo/logo_2.png') }}" alt="Logo" class="me-2" style="height:50px;">
+                    <span class="fw-bold fs-4 text-dark">SIGOP</span>
+                </a>
+            @endrole
+
 
             <!-- Usuario (solo visible cuando hay sesión iniciada) -->
             @if(Auth::check())
@@ -42,7 +57,6 @@
                     </li>
                 </ul>
             @endif
-
         </div>
 
         <!-- Barra de navegación principal -->

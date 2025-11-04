@@ -16,7 +16,6 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 //Rutas publicas
 Route::get('/', [PublicControler::class, 'index']);
-Route::get('/dashboard', [HomeController::class, 'adminDashboard'])->name('dashboard');
 
 //Rutas admin
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->group(function () {
@@ -32,7 +31,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
 });
 
 //Rutas editor
-Route::prefix('editor')->middleware(['auth', 'role:editor'])->group(function () {
+Route::prefix('editor')->name('editor.')->middleware(['auth', 'role:editor'])->group(function () {
     //editor/dashboard
-    Route::get('/dashboard', [HomeController::class, 'editorDashboard'])->name('editor.dashboard');
+    Route::get('/dashboard', [HomeController::class, 'editorDashboard'])->name('dashboard');
 });
