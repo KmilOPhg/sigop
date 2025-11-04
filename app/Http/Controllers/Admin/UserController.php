@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Permission;
@@ -99,9 +100,15 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function eliminarUsuarios(User $user): RedirectResponse
+    public function eliminarUsuarios(Request $request, User $user): JsonResponse
     {
-        $user->update(['estado' => 'inactivo']);
-        return redirect()->route('admin.users.listar')->with('success', 'Usuario eliminado correctamente');
+        $user->update(['estado' => $request->estado]);
+
+        return response()->json([
+            'message' => 'Usuario desactivado correctamente.',
+            'status' => 'success',
+            'estado' => $user->estado,
+        ]);
+        //return redirect()->route('admin.users.listar')->with('success', 'Usuario eliminado correctamente');
     }
 }

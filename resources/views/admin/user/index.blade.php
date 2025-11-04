@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+@vite(['resources/js/app.js', 'resources/css/app.css'])
 @section('content')
     <div class="container py-4">
         <div class="row justify-content-center">
@@ -113,11 +113,13 @@
 
                                         <!-- Estado -->
                                         <td>
-                                            @if($user->estado === 'activo')
-                                                <span class="badge bg-success text-white px-3 py-2 fw-semibold">Activo</span>
-                                            @else
-                                                <span class="badge bg-secondary text-white px-3 py-2 fw-semibold">Inactivo</span>
-                                            @endif
+                                            <button
+                                                class="btn-cambiar-estado btn badge {{ $user->estado === 'activo' ? 'btn-success' : 'btn-danger' }} text-white fw-semibold px-3 py-2"
+                                                data-user-id="{{ $user->id }}"
+                                                data-user="{{ $user }}"
+                                                data-estado="{{ $user->estado === 'activo' ? 'inactivo' : 'activo' }}">
+                                                {{ ucfirst($user->estado) }}
+                                            </button>
                                         </td>
 
                                         <!-- Acciones -->
@@ -131,7 +133,7 @@
                                                 </a>
 
                                                 <!-- Eliminar -->
-                                                @if($user->estado === 'activo')
+                                                {{--@if($user->estado === 'activo')
                                                     <form action="{{ route('admin.users.eliminar', $user->id) }}"
                                                           method="POST"
                                                           onsubmit="return confirm('¿Seguro que deseas eliminar este usuario?')">
@@ -143,7 +145,7 @@
                                                             <i class="bi bi-trash3"></i> Inhabilitar
                                                         </button>
                                                     </form>
-                                                @endif
+                                                @endif--}}
                                             </div>
                                         </td>
                                     </tr>
