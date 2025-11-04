@@ -26,10 +26,15 @@
                                 <input type="email" class="form-control" id="email" name="email"
                                        value="{{ old('email',$user->email) }}" required>
                             </div>
-                            {{--<div class="mb-3">
-                                <label for="password" class="form-label">Contraseña</label>
-                                <input type="password" class="form-control" id="password" name="password">
-                            </div>--}}
+                            {{-- Combobox para seleccionar estado del usuario --}}
+                            <div class="mb-3">
+                                <label for="estado" class="form-label">Estado del usuario</label>
+                                <select name="estado" id="estado" class="form-select">
+                                    <option value="activo" {{ old('estado', $user->estado) === 'activo' ? 'selected' : '' }}>Activo</option>
+                                    <option value="inactivo" {{ old('estado', $user->estado) === 'inactivo' ? 'selected' : '' }}>Inactivo</option>
+                                </select>
+                            </div>
+
                             <div class="mb-3">
                                 <label for="roles" class="form-label">Roles</label>
                                 <div id="roles" class="d-flex flex-wrap gap-2">

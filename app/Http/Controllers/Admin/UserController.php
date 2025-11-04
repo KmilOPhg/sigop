@@ -18,7 +18,7 @@ class UserController extends Controller
      */
     public function verUsuarios(): Factory|View
     {
-        $users = User::with('roles', 'permissions')->where('estado', 'activo')->get();
+        $users = User::with('roles', 'permissions')->get();
         return view('admin.user.index', compact('users'));
     }
 
@@ -78,6 +78,7 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
             'password' => 'nullable|string|min:8',
+            'estado' => 'required|string|in:activo,inactivo',
             'roles' => 'nullable|array',
             'permissions' => 'nullable|array',
         ]);
@@ -85,7 +86,8 @@ class UserController extends Controller
         $user->update([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => bcrypt($request->password),
+            'estado' => $request->estado,
+            'password' => $request->password ? bcrypt($request->password) : $user->password,
         ]);
 
         $user->syncRoles($request->roles ?? []);

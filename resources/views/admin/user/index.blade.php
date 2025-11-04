@@ -32,13 +32,14 @@
                                     <th class="text-uppercase small fw-semibold">Roles</th>
                                     <th class="text-uppercase small fw-semibold">Permisos</th>
                                     <th class="text-uppercase small fw-semibold">Email</th>
+                                    <th class="text-uppercase small fw-semibold">Estado</th>
                                     <th class="text-uppercase small fw-semibold">Acciones</th>
                                 </tr>
                                 </thead>
 
                                 <tbody>
                                 @forelse ($users as $user)
-                                    <tr class="bg-white border-bottom">
+                                    <tr class="bg-white border-bottom {{ $user->estado === 'inactivo' ? 'opacity-50' : '' }}">
                                         <!-- Nombre -->
                                         <td class="fw-semibold text-start ps-3" title="{{ $user->name }}">
                                             <i class="bi bi-person-circle me-1" style="color:#2271B4;"></i>
@@ -85,6 +86,15 @@
                                             <i class="bi bi-envelope-at me-1"></i>{{ $user->email }}
                                         </td>
 
+                                        <!-- Estado -->
+                                        <td>
+                                            @if($user->estado === 'activo')
+                                                <span class="badge bg-success text-white px-3 py-2 fw-semibold">Activo</span>
+                                            @else
+                                                <span class="badge bg-secondary text-white px-3 py-2 fw-semibold">Inactivo</span>
+                                            @endif
+                                        </td>
+
                                         <!-- Acciones -->
                                         <td>
                                             <div class="d-flex justify-content-center flex-wrap gap-2">
@@ -96,17 +106,19 @@
                                                 </a>
 
                                                 <!-- Eliminar -->
-                                                <form action="{{ route('admin.users.eliminar', $user->id) }}"
-                                                      method="POST"
-                                                      onsubmit="return confirm('¿Seguro que deseas eliminar este usuario?')">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit"
-                                                            class="btn btn-sm text-white fw-semibold d-flex align-items-center gap-1"
-                                                            style="background-color:#dc3545;">
-                                                        <i class="bi bi-trash3"></i> Inhabilitar
-                                                    </button>
-                                                </form>
+                                                @if($user->estado === 'activo')
+                                                    <form action="{{ route('admin.users.eliminar', $user->id) }}"
+                                                          method="POST"
+                                                          onsubmit="return confirm('¿Seguro que deseas eliminar este usuario?')">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit"
+                                                                class="btn btn-sm text-white fw-semibold d-flex align-items-center gap-1"
+                                                                style="background-color:#dc3545;">
+                                                            <i class="bi bi-trash3"></i> Inhabilitar
+                                                        </button>
+                                                    </form>
+                                                @endif
                                             </div>
                                         </td>
                                     </tr>
