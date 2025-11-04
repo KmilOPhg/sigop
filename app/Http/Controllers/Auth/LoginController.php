@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 
 class LoginController extends Controller
@@ -64,5 +65,17 @@ class LoginController extends Controller
             'password' => $request->password,
             'estado' => 'activo',
         ];
+    }
+
+    public function logout(Request $request)
+    {
+        Auth::logout(); // Cierra la sesión del usuario.
+
+        //Limpia la sesión para evitar problemas con cookies persistentes.
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        //Redireccionar al usuario a la página de inicio.
+        return redirect('/login')->with('success', 'Has cerrado sesión exitosamente.');
     }
 }

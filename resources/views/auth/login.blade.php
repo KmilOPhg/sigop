@@ -13,6 +13,7 @@
 
                 <!-- Cuerpo -->
                 <div class="card-body px-4 py-4">
+                    @include('partials.errorsuccess')
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
 
