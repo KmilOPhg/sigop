@@ -15,7 +15,7 @@ class UserController extends Controller
      */
     public function verUsuarios()
     {
-        $users = User::with('roles', 'permissions')->get();
+        $users = User::with('roles', 'permissions')->where('estado', 'activo')->get();
         return view('admin.user.index', compact('users'));
     }
 
@@ -96,7 +96,7 @@ class UserController extends Controller
      */
     public function eliminarUsuarios(User $user)
     {
-        $user->delete();
+        $user->update(['estado' => 'inactivo']);
         return redirect()->route('admin.users.listar')->with('success', 'Usuario eliminado correctamente');
     }
 }

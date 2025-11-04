@@ -17,13 +17,15 @@ class AdminUserSeeder extends Seeder
         $admin = User::create([
             'name' => 'Admin User',
             'email' => 'admin@admin.com',
-            'password' => Hash::make('admin')
+            'password' => Hash::make('admin'),
+            'estado' => 'activo'
         ]);
 
         $editor = User::create([
             'name' => 'Editor User',
             'email' => 'editor@editor.com',
-            'password' => Hash::make('editor')
+            'password' => Hash::make('editor'),
+            'estado' => 'activo'
         ]);
 
         $admin->assignRole('admin');
