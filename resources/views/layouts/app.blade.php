@@ -16,20 +16,14 @@
 
         <!-- Sección superior (blanca) -->
         <div class="container-fluid py-2 px-4 bg-white d-flex justify-content-between align-items-center border-bottom">
-            <a class="navbar-brand d-flex align-items-center text-decoration-none" href="{{ url('/') }}">
+            <a class="navbar-brand d-flex align-items-center text-decoration-none" href="{{ route('admin.dashboard') }}">
                 <img src="{{ asset('logo/logo_2.png') }}" alt="Logo" class="me-2" style="height:50px;">
                 <span class="fw-bold fs-4 text-dark">SIGOP</span>
             </a>
 
-            <!-- Usuario -->
-            <ul class="navbar-nav ms-auto">
-                @guest
-                    <li class="nav-item">
-                        <a class="nav-link fw-semibold text-dark" href="{{ route('login') }}">
-                            <i class="bi bi-box-arrow-in-right me-1"></i>Iniciar sesión
-                        </a>
-                    </li>
-                @else
+            <!-- Usuario (solo visible cuando hay sesión iniciada) -->
+            @if(Auth::check())
+                <ul class="navbar-nav ms-auto">
                     <li class="nav-item dropdown">
                         <a id="navbarDropdown" class="nav-link dropdown-toggle fw-semibold text-dark" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="bi bi-person-circle me-1 text-primary"></i>{{ Auth::user()->name }}
@@ -46,8 +40,9 @@
                             </li>
                         </ul>
                     </li>
-                @endguest
-            </ul>
+                </ul>
+            @endif
+
         </div>
 
         <!-- Barra de navegación principal -->

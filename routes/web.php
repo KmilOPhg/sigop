@@ -16,7 +16,7 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 //Rutas publicas
 Route::get('/', [PublicControler::class, 'index']);
-Route::get('/empresa', [PublicControler::class, 'empresa']);
+Route::get('/dashboard', [HomeController::class, 'adminDashboard'])->name('dashboard');
 
 //Rutas admin
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->group(function () {
