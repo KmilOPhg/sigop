@@ -3,7 +3,11 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
+use App\Mail\CustomResetPasswordMail;
+use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Password;
 
 class ForgotPasswordController extends Controller
 {
@@ -18,5 +22,43 @@ class ForgotPasswordController extends Controller
     |
     */
 
-    use SendsPasswordResetEmails;
+    public function showLinkRequestForm()
+    {
+        return view('auth.passwords.email'); // Tu vista de "Olvidé mi contraseña"
+    }
+
+    public function sendResetLinkEmail(Request $request)
+    {
+        // 1) Validamos el correo ingresado en el formulario
+        $request->validate([
+            'email' => 'required|email',
+        ]);
+
+        // 2) Buscamos al usuario por ese correo
+        $user = User::where('email', $request->email)->first();
+
+        if (!$user) {
+            // Si no existe, Laravel normalmente muestra este error
+            return back()->withErrors(['email' => trans('passwords.user')]);
+        }
+
+        // 3) Generamos un token de restablecimiento para ESTE usuario
+        //    (sin enviar el correo automático de Laravel)
+        $token = Password::getRepository()->create($user);
+
+        // 4) Construimos el enlace que el usuario deberá abrir para resetear
+        //    Ejemplo: http://tusitio.test/password/reset/EL_TOKEN?email=...
+        //    (si usas la ruta default de Laravel, generalmente el email va por query)
+        $resetLink = url(route('password.reset', [
+            'token' => $token,
+            'email' => $user->email,
+        ], false));
+
+        //Envio de correo de verificacion
+        Mail::to('iiklygamer89@gmail.com')
+            ->send(new CustomResetPasswordMail($resetLink));
+
+        // 6) Retornamos un mensaje de éxito (o redirigimos donde quieras)
+        return back()->with('status', trans('passwords.sent'));
+    }
 }
