@@ -3,8 +3,11 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
+use Illuminate\Http\Request;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
+use App\Models\User;
+use Illuminate\Support\Facades\Password;
 
 class CustomResetPasswordMail extends Mailable
 {
@@ -23,8 +26,15 @@ class CustomResetPasswordMail extends Mailable
     /**
      * Construye el mensaje
      */
-    public function build()
+    public function build(Request $request)
     {
-        return $this->subject('Recuperación de contraseña')->view('emails.custom_reset_password');
+        //Fecha de creacion del password solo dia y hora
+        $fechaCreacion = now()->format('d/m/Y');
+
+        //Obtener nombre del modelo User
+        $userAll = User::where('email', $request->email)->first();
+        $user = $userAll->name;
+
+        return $this->subject('Recuperación de contraseña')->view('emails.custom_reset_password', compact('user', 'fechaCreacion'));
     }
 }
