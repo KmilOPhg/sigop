@@ -24,7 +24,9 @@ class ForgotPasswordController extends Controller
 
     public function showLinkRequestForm()
     {
-        return view('auth.passwords.email'); // Tu vista de "Olvidé mi contraseña"
+        $user = User::role('admin')->get(); //Ejemplo de obtención de usuarios con rol 'admin'
+
+        return view('auth.passwords.email', compact('user')); // Tu vista de "Olvidé mi contraseña"
     }
 
     public function sendResetLinkEmail(Request $request)
