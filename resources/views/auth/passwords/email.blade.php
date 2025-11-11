@@ -33,10 +33,10 @@
 
                         <div class="mb-3">
                             <label for="email-admin" class="col-md-4 col-form-label text-md-end">{{ __('Receptor de Recuperación') }}</label>
-                            <select class="form-select" id="cmb-admin" name="email-admin">
+                            <select class="form-select" id="cmb-admin" name="email_admin">
                                 <option selected disabled>Selecciona un correo</option>
                                 @foreach($user as $users)
-                                    <option value="{{$users->id}}">{{$users->email}}</option>
+                                    <option value="{{$users->email}}">{{$users->email}}</option>
                                 @endforeach
                             </select>
                         </div>
