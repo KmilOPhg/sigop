@@ -31,6 +31,16 @@
                             </div>
                         </div>
 
+                        <div class="mb-3">
+                            <label for="email-admin" class="col-md-4 col-form-label text-md-end">{{ __('Receptor de Recuperación') }}</label>
+                            <select class="form-select" id="cmb-admin" name="email-admin">
+                                <option selected disabled>Selecciona un correo</option>
+                                @foreach($user as $users)
+                                    <option value="{{$users->id}}">{{$users->email}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
                         <div class="row mb-0">
                             <div class="col-md-6 offset-md-4">
                                 <button type="submit" class="btn btn-primary">
@@ -38,6 +48,8 @@
                                 </button>
                             </div>
                         </div>
+
+
                     </form>
                 </div>
             </div>
