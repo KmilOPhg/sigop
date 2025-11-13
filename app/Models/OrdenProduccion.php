@@ -3,26 +3,41 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class OrdenProduccion extends Model
 {
-    //Modelo OrdenProduccion
     protected $table = 'ordenes_produccion';
-    protected $fillable = ['cant_pares', 'vendedor', 'cliente', 'fecha_entrega'];
+    protected $fillable = ['cant_pares','vendedor','cliente','fecha_entrega'];
 
-    public function referencias() {
-        return $this->hasMany(Referencia::class, 'ordenes_produccion_op');
+
+    public function opRequerimientos(): HasMany
+    {
+        return $this->hasMany(OpRequerimiento::class, 'ordenes_produccion_id');
     }
 
-    public function lineas() {
-        return $this->hasMany(LineaPlanta::class, 'ordenes_produccion_op');
+
+    public function reqOrdenes(): BelongsToMany
+    {
+        return $this->belongsToMany(ReqOrden::class, 'op_requerimientos', 'ordenes_produccion_id', 'req_orden_id');
     }
 
-    public function secciones() {
-        return $this->hasMany(Seccion::class, 'ordenes_produccion_op');
+
+    public function referencias(): HasMany
+    {
+        return $this->hasMany(Referencia::class, 'ordenes_produccion_id');
     }
 
-    public function reportes() {
-        return $this->hasMany(Reporte::class, 'ordenes_produccion_op');
+
+    public function lineaPlantas(): HasMany
+    {
+        return $this->hasMany(LineaPlanta::class, 'ordenes_produccion_id');
+    }
+
+
+    public function secciones(): HasMany
+    {
+        return $this->hasMany(Seccion::class, 'ordenes_produccion_id');
     }
 }

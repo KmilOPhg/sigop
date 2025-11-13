@@ -9,7 +9,8 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void {
+    public function up(): void
+    {
         Schema::create('ordenes_produccion', function (Blueprint $table) {
             $table->id();
             $table->integer('cant_pares')->nullable();
@@ -20,7 +21,11 @@ return new class extends Migration
         });
     }
 
-    public function down(): void {
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
         Schema::dropIfExists('ordenes_produccion');
     }
 };
