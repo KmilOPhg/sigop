@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Bodega extends Model
 {
-    protected $table = 'bodegas';
+    protected $table = 'bodega';
     protected $fillable = ['nombre'];
 
 

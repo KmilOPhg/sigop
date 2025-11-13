@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('inventario_material', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('bodega_id')->nullable()->constrained('bodegas');
+            $table->foreignId('bodega_id')->nullable()->constrained('bodega');
             $table->foreignId('linea_material_id')->nullable()->constrained('linea_material');
             $table->foreignId('material_color_id')->nullable()->constrained('material_color');
             $table->float('existencia')->nullable();
