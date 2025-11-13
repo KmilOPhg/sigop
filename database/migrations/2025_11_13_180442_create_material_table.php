@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('material', function (Blueprint $table) {
+        Schema::create('materiales', function (Blueprint $table) {
             $table->id();
             $table->string('nombre_material', 50)->nullable();
             $table->string('unidad_medida', 5)->nullable();

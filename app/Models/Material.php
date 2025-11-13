@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Material extends Model
 {
-    protected $table = 'materials';
+    protected $table = 'materiales';
     protected $fillable = ['nombre_material','unidad_medida'];
 
     public function materialColors(): HasMany
