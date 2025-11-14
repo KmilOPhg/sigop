@@ -9,7 +9,14 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Referencia extends Model
 {
     protected $table = 'referencias';
-    protected $fillable = ['ref','cuello_botella','cant_diario','ordenes_produccion_id', 'user_id'];
+
+    protected $fillable = [
+        'ref',
+        'cuello_botella',
+        'cant_diario',
+        'ordenes_produccion_id',
+        'user_id'
+    ];
 
     public function orden(): BelongsTo
     {

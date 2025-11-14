@@ -8,7 +8,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Corte extends Model
 {
     protected $table = 'cortes';
-    protected $fillable = ['nombre','cant_diario','referencia_id'];
+    protected $fillable = [
+        'nombre',
+        'cant_diario',
+        'referencia_id'
+    ];
 
     public function referencia(): BelongsTo
     {

@@ -8,7 +8,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class InventarioMaterial extends Model
 {
     protected $table = 'inventario_material';
-    protected $fillable = ['bodega_id','linea_material_id','material_color_id','existencia'];
+    protected $fillable = [
+        'bodega_id',
+        'linea_material_id',
+        'material_color_id',
+        'existencia'
+    ];
 
     public function bodega(): BelongsTo
     {

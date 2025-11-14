@@ -8,7 +8,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class MaterialColor extends Model
 {
     protected $table = 'material_color';
-    protected $fillable = ['material_id','detalle_color_id'];
+    protected $fillable = [
+        'material_id',
+        'detalle_color_id'
+    ];
 
     public function material(): BelongsTo
     {

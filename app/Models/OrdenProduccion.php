@@ -9,7 +9,12 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class OrdenProduccion extends Model
 {
     protected $table = 'ordenes_produccion';
-    protected $fillable = ['cant_pares','vendedor','cliente','fecha_entrega'];
+    protected $fillable = [
+        'cant_pares',
+        'vendedor',
+        'cliente',
+        'fecha_entrega'
+    ];
 
 
     public function opRequerimientos(): HasMany

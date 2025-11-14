@@ -9,7 +9,10 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Bodega extends Model
 {
     protected $table = 'bodega';
-    protected $fillable = ['nombre'];
+
+    protected $fillable = [
+        'nombre'
+    ];
 
 
     public function inventarios(): HasMany

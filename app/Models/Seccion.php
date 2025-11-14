@@ -8,7 +8,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Seccion extends Model
 {
     protected $table = 'secciones';
-    protected $fillable = ['nombre','ordenes_produccion_id'];
+
+    protected $fillable = [
+        'nombre',
+        'ordenes_produccion_id'
+    ];
 
     public function orden(): BelongsTo
     {

@@ -8,7 +8,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class OpRequerimiento extends Model
 {
     protected $table = 'op_requerimientos';
-    protected $fillable = ['ordenes_produccion_id','req_orden_id'];
+    protected $fillable = [
+        'ordenes_produccion_id',
+        'req_orden_id'
+    ];
 
     public function orden(): BelongsTo
     {

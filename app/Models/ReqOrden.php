@@ -8,7 +8,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class ReqOrden extends Model
 {
     protected $table = 'req_ordenes';
-    protected $fillable = ['material_color_id','cant_material'];
+
+    protected $fillable = [
+        'material_color_id',
+        'cant_material'
+    ];
 
     public function materialColor(): BelongsTo
     {
