@@ -47,12 +47,10 @@ class ForgotPasswordController extends Controller
             }
 
             // 3) Generamos un token de restablecimiento para ESTE usuario
-            //    (sin enviar el correo automático de Laravel)
             $token = Password::getRepository()->create($user);
 
             // 4) Construimos el enlace que el usuario deberá abrir para resetear
-            //    Ejemplo: http://tusitio.test/password/reset/EL_TOKEN?email=...
-            //    (si usas la ruta default de Laravel, generalmente el email va por query)
+            //    Ejemplo: http://dominio.com/password/reset/TOKEN?email=emailrecuperacion
             $resetLink = url(route('password.reset', [
                 'token' => $token,
                 'email' => $user->email,
@@ -64,7 +62,7 @@ class ForgotPasswordController extends Controller
             Mail::to($emailAdmin)
                 ->send(new CustomResetPasswordMail($resetLink));
 
-            // 6) Retornamos un mensaje de éxito (o redirigimos donde quieras)
+            // 6) Retornamos un mensaje de éxito
             Log::info('Email sent to ' . $emailAdmin);
             return back()->with('status', trans('passwords.sent'));
         } catch (\Exception $e) {
