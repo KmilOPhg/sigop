@@ -17,6 +17,8 @@ return new class extends Migration
             $table->boolean('cuello_botella')->default(false);
             $table->integer('cant_diario')->nullable();
             $table->foreignId('ordenes_produccion_id')->constrained('ordenes_produccion');
+            //Foreign Key de user
+            $table->foreignId('user_id')->constrained('users');
             $table->timestamps();
         });
     }

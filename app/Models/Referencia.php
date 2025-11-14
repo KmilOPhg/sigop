@@ -20,4 +20,9 @@ class Referencia extends Model
     {
         return $this->hasMany(Corte::class, 'referencia_id');
     }
+
+    public function user(): belongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }

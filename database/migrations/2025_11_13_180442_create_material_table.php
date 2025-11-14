@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('nombre_material', 50)->nullable();
             $table->string('unidad_medida', 5)->nullable();
+            //Foreign Key de user
+            $table->foreignId('user_id')->constrained('users');
             $table->timestamps();
         });
     }
