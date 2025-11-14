@@ -16,6 +16,7 @@ return new class extends Migration
             $table->integer('cant_pares')->nullable();
             $table->string('vendedor', 100)->nullable();
             $table->string('cliente', 100)->nullable();
+            $table->string('estado', 50)->nullable();
             $table->date('fecha_entrega')->nullable();
             $table->timestamps();
         });
