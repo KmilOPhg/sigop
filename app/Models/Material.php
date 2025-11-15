@@ -14,6 +14,7 @@ class Material extends Model
     protected $fillable = [
         'nombre_material',
         'unidad_medida',
+        'estado',
         'user_id'
     ];
 

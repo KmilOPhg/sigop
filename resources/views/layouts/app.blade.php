@@ -89,7 +89,8 @@
                                     'label' => 'Inventarios',
                                     'items' => [
                                         ['label' => 'Stock mínimo', 'href' => '#'],
-                                        ['label' => 'Alertas de bajo stock', 'href' => '#']
+                                        ['label' => 'Alertas de bajo stock', 'href' => '#'],
+                                        ['label' => 'Materiales', 'href' => route('admin.materiales.listar')]
                                     ]
                                 ],
                                 [

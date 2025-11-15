@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\PublicControler;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -22,6 +23,7 @@ Route::get('/', [PublicControler::class, 'index']);
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->group(function () {
     //admin/dashboard
     Route::get('/dashboard', [HomeController::class, 'adminDashboard'])->name('dashboard');
+
     //admin/users
     Route::get('/users', [UserController::class, 'verUsuarios'])->name('users.listar');
     Route::get('/users/crear', [UserController::class, 'crearUsuarosForm'])->name('users.crear.form');
@@ -29,6 +31,10 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     Route::get('/users/{user}/editar', [UserController::class, 'editarUsuarios'])->name('users.editar.form');
     Route::put('/users/{user}/actualizar', [UserController::class, 'actualizarUsuarios'])->name('users.actualizar');
     Route::put('/users/{user}/desactivar', [UserController::class, 'eliminarUsuarios'])->name('users.eliminar');
+
+    //Ruta materiales
+    Route::get('/materiales', [MaterialController::class, 'listarMaterial'])->name('materiales.listar');
+    Route::post('/materiales', [MaterialController::class, 'crearMaterial'])->name('materiales.crear');
 });
 
 //Rutas editor

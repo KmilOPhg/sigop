@@ -14,7 +14,7 @@
                             </div>
                         @endif
 
-                        {{ __('Iniciaste como admin') }}
+                        {{ __('DASHBOARD') }}
                         <div class="col-sm-3">
                             <!--<a href="{{ route('admin.users.listar') }}" class="btn btn-primary">Gestionar Usuarios</a>-->
                         </div>
