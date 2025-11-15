@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\MaterialValidatorRequest;
 use App\Models\Material;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\View\Factory;
 use Illuminate\View\View;
@@ -30,21 +32,16 @@ class MaterialController extends Controller
     }
 
     /**
-     * @param Request $request
+     * @param MaterialValidatorRequest $request
      * @return RedirectResponse
      *
      * Funcion crear material
      */
-    function crearMaterial(Request $request) : RedirectResponse
+    function crearMaterial(MaterialValidatorRequest $request) : RedirectResponse
     {
-
         try {
-            //Validar los datos
-            $request->validate([
-                'nombre' => 'required|string|max:255',
-                'unidad_medida' => 'required|string|max:255',
-                'estado' => 'required|string|in:activo,inactivo',
-            ]);
+
+            DB::beginTransaction();
 
             //Crear el material
             Material::create([
@@ -54,15 +51,18 @@ class MaterialController extends Controller
                 'user_id' => auth()->id(),
             ]);
 
+            DB::commit();
+
             return redirect()->route('admin.materiales.listar')->with('success', 'Material creado exitosamente.');
         } catch (Exception $e) {
+            DB::rollBack();
             Log::error('Error al crear material: ' . $e->getMessage());
             return back()->withErrors([$e->getMessage()]);
         }
     }
 
     /**
-     * @return Factory|View
+     * @return Factory|View|RedirectResponse Funcion mostrar formulario de crear material
      *
      * Funcion mostrar formulario de crear material
      */
@@ -77,7 +77,12 @@ class MaterialController extends Controller
         }
     }
 
-    //Mostrar formulario de editar material
+    /**
+     * @param Material $material
+     * @return Factory|View|RedirectResponse
+     *
+     * Funcion mostrar formulario de editar material
+     */
     function editarMaterial(Material $material) : Factory | View | RedirectResponse
     {
         try {
@@ -87,17 +92,21 @@ class MaterialController extends Controller
         }
     }
 
-    function actualizarMaterial(Request $request, Material $material) : RedirectResponse
+    /**
+     * @param MaterialValidatorRequest $request
+     * @param Material $material
+     * @return RedirectResponse
+     *
+     * Funcion actualizar material
+     */
+    function actualizarMaterial(MaterialValidatorRequest $request, Material $material) : RedirectResponse
     {
         try {
-            $request->validate([
-                'nombre_material' => 'required|string|max:255',
-                'unidad_medida' => 'required|string|max:255',
-            ]);
-
             $material->update([
                 'nombre_material' => $request->nombre_material,
                 'unidad_medida' => $request->unidad_medida,
+                'estado' => $request->estado,
+                'user_id' => auth()->id(),
             ]);
 
             return redirect()->route('admin.materiales.listar')->with('success', 'Material actualizado exitosamente.');
@@ -106,9 +115,15 @@ class MaterialController extends Controller
         }
     }
 
+    /**
+     * @param Request $request
+     * @param Material $material
+     * @return JsonResponse
+     *
+     * Funcion inhabilitar material
+     */
     public function inhabilitarMaterial(Request $request, Material $material) : JsonResponse
     {
-
         try {
             //Obtener el estado del material desde la solicitud
             $material->update(['estado' => $request->estado]);
