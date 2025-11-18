@@ -24,8 +24,28 @@ class MaterialController extends Controller
     function listarMaterial() : Factory | View | RedirectResponse
     {
         try {
-            $materiales = Material::with('user')->get();
-            return view('admin.inventario.materiales', compact('materiales'));
+            $materiales = Material::with('user')->where('estado', 'activo')->get();
+
+            $materialesInactivosCount = Material::where('estado', 'inactivo')->count();
+
+            $modo = 'activo';
+
+            return view('admin.inventario.materiales', compact('materiales', 'materialesInactivosCount', 'modo'));
+        } catch (Exception $e) {
+            return back()->withErrors([$e->getMessage()]);
+        }
+    }
+
+    function listarMaterialesInabilitados() : Factory | View | RedirectResponse
+    {
+        try {
+            $materiales = Material::with('user')->where('estado', 'inactivo')->get();
+
+            $materialesInactivosCount = Material::where('estado', 'inactivo')->count();
+
+            $modo = 'inactivo';
+
+            return view('admin.inventario.materiales', compact('materiales', 'materialesInactivosCount', 'modo'));
         } catch (Exception $e) {
             return back()->withErrors([$e->getMessage()]);
         }
@@ -47,7 +67,7 @@ class MaterialController extends Controller
             Material::create([
                 'nombre_material' => $request->nombre_material,
                 'unidad_medida' => $request->unidad_medida,
-                'estado' => $request->estado,
+                'estado' => 'Activo',
                 'user_id' => auth()->id(),
             ]);
 
@@ -105,7 +125,7 @@ class MaterialController extends Controller
             $material->update([
                 'nombre_material' => $request->nombre_material,
                 'unidad_medida' => $request->unidad_medida,
-                'estado' => $request->estado,
+                'estado' => $request->estado ? $request->estado : $material->estado,
                 'user_id' => auth()->id(),
             ]);
 

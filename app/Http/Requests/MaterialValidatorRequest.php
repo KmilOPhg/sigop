@@ -24,7 +24,7 @@ class MaterialValidatorRequest extends FormRequest
         return [
             'nombre_material' => 'required|string|max:255',
             'unidad_medida' => 'required|string|max:255',
-            'estado' => 'required|string|in:activo,inactivo',
+            //'estado' => 'required|string|in:activo,inactivo',
         ];
     }
 

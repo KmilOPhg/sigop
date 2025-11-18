@@ -34,7 +34,13 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
 
     //Ruta materiales
     Route::get('/materiales', [MaterialController::class, 'listarMaterial'])->name('materiales.listar');
-    Route::post('/materiales', [MaterialController::class, 'crearMaterial'])->name('materiales.crear');
+    //Route::get('/materiales/crear', [MaterialController::class, 'crearMaterial'])->name('materiales.crear');
+    Route::get('/materiales/crear', [MaterialController::class, 'crearMaterialForm'])->name('materiales.crear.form');
+    Route::post('/materiales/crear/nuevo', [MaterialController::class, 'crearMaterial'])->name('materiales.crear.post');
+    Route::get('/materiales/{material}/editar', [MaterialController::class, 'editarMaterial'])->name('materiales.editar');
+    Route::get('/materiales/{material}/actualizar', [MaterialController::class, 'actualizarMaterial'])->name('materiales.actualizar');
+    Route::put('/materiales/{material}/inhabilitar', [MaterialController::class, 'inhabilitarMaterial'])->name('materiales.inhabilitar');
+    Route::get('/materiales/inhabilitados', [MaterialController::class, 'listarMaterialesInabilitados'])->name('materiales.inhabilitados');
 });
 
 //Rutas editor
