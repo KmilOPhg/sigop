@@ -15,7 +15,7 @@
                         </h4>
 
                         @if($modo === 'activo')
-                            <a href="{{ route('admin.materiales.listar', ['modo' => 'inactivo']) }}"
+                            <a href="{{ route('admin.materiales.inhabilitados', ['modo' => 'inactivo']) }}"
                                class="btn btn-light btn-sm fw-semibold px-3 py-2 shadow-sm">
                                 <i class="bi bi-eye-slash me-1"></i> Ver Inactivos
                             </a>

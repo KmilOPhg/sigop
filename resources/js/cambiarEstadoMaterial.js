@@ -52,19 +52,26 @@ document.addEventListener("DOMContentLoaded", function() {
 
                 await Swal.fire({
                     toast: true,
+                    icon: 'success',
+                    title: `Estado actualizado: ${nuevoEstado}`,
                     position: 'bottom-end',
                     showConfirmButton: false,
-                    timer: 5000,
+                    timer: 2200,
                     timerProgressBar: true,
-                    showCancelButton: true,
-                    cancelButtonText: 'Cerrar',
-                    background: '#1d784d',
-                    theme: 'dark',
-                    title: 'Cambiar estado',
-                    icon: 'success',
-                    html: `<i class="bi bi-check-circle-fill"></i> El estado del material ha sido cambiado exitosamente.`,
-                });
 
+                    // Fondo verde suave translúcido con brillo sutil
+                    background: 'rgba(13, 110, 253, 0.75)',   // azul del sistema, translúcido
+                    color: '#f8f9fa',                         // texto claro
+                    iconColor: 'rgba(14,0,255,0.75)',                     // verde pastel (match con "Activo")
+
+                    customClass: {
+                        popup: `shadow-lg
+                            backdrop-blur-md
+                            rounded-xl
+                            border border-emerald-300/40`,
+                        title: `font-semibold tracking-wide`
+                    }
+                });
             } else {
                 alert('Error al cambiar el estado del usuario.');
             }

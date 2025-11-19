@@ -30,8 +30,10 @@ class MaterialController extends Controller
 
             $modo = 'activo';
 
+            Log::info('Listando materiales con modo: ' . $modo);
             return view('admin.inventario.materiales', compact('materiales', 'materialesInactivosCount', 'modo'));
         } catch (Exception $e) {
+            Log::info('Error al listar materiales: ' . $e->getMessage());
             return back()->withErrors([$e->getMessage()]);
         }
     }
@@ -45,8 +47,10 @@ class MaterialController extends Controller
 
             $modo = 'inactivo';
 
+            Log::info('Listando materiales con modo: ' . $modo);
             return view('admin.inventario.materiales', compact('materiales', 'materialesInactivosCount', 'modo'));
         } catch (Exception $e) {
+            Log::info('Error al listar materiales: ' . $e->getMessage());
             return back()->withErrors([$e->getMessage()]);
         }
     }
