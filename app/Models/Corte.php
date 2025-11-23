@@ -9,6 +9,7 @@ class Corte extends Model
 {
     protected $table = 'cortes';
     protected $fillable = [
+        'codigo',
         'nombre',
         'cant_diario',
         'referencia_id'

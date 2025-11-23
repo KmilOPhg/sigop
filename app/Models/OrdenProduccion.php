@@ -11,6 +11,7 @@ class OrdenProduccion extends Model
     protected $table = 'ordenes_produccion';
     protected $fillable = [
         'cant_pares',
+        'numero_orden',
         'vendedor',
         'cliente',
         'fecha_entrega'

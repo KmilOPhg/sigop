@@ -9,6 +9,7 @@ class LineaPlanta extends Model
 {
     protected $table = 'linea_planta';
     protected $fillable = [
+        'codigo',
         'nombre',
         'cant_diario',
         'ordenes_produccion_id'

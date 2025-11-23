@@ -10,6 +10,7 @@ class Seccion extends Model
     protected $table = 'secciones';
 
     protected $fillable = [
+        'codigo',
         'nombre',
         'ordenes_produccion_id'
     ];

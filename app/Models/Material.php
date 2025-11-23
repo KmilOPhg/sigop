@@ -12,6 +12,7 @@ class Material extends Model
     protected $table = 'materiales';
 
     protected $fillable = [
+        'item_material',
         'nombre_material',
         'unidad_medida',
         'estado',

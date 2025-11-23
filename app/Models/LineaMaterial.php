@@ -10,6 +10,7 @@ class LineaMaterial extends Model
 {
     protected $table = 'linea_material';
     protected $fillable = [
+        'codigo',
         'nombre',
         'cant_diaria'
     ];

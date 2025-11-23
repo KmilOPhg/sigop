@@ -10,6 +10,7 @@ class DetalleColor extends Model
     protected $table = 'detalle_color';
 
     protected $fillable = [
+        'item_color',
         'nombre_color'
     ];
 
