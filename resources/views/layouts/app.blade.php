@@ -101,6 +101,16 @@
                                         ['label' => 'Producción', 'href' => '#'],
                                         ['label' => 'Pedidos', 'href' => '#']
                                     ]
+                                ],
+                                [
+                                    'icon' => 'bi-patch-question',
+                                    'label' => 'Ayuda',
+                                    'items' => [
+                                        ['label' => 'Acerca de SIGOP', 'href' => '#'],
+                                        ['label' => 'Manual de Usuario', 'href' => '#'],
+                                        ['label' => 'Preguntas Frecuentes (FAQ)', 'href' => '#'],
+                                        ['label' => 'Centro de Soporte', 'href' => '#']
+                                    ]
                                 ]
                             ];
                         @endphp
@@ -140,12 +150,28 @@
                                style="transition: all 0.3s ease; border-radius: 0.4rem;"
                                onmouseover="this.style.backgroundColor='#1E9D52'; this.style.boxShadow='0 2px 8px rgba(0,0,0,0.15)';"
                                onmouseout="this.style.backgroundColor='#2271B4'; this.style.boxShadow='none';">
-                                <i class="bi bi-gear-fill me-2 fs-5"></i>Gestión SIGOP
+                                <i class="bi bi-people-fill me-2 fs-5"></i>Usuarios
                             </a>
                             <ul class="dropdown-menu shadow border-0 rounded-3 mt-1" style="min-width:200px;">
-                                <li><a class="dropdown-item fw-semibold py-2" href="{{ route('admin.users.listar') }}">Usuarios</a></li>
+                                <li><a class="dropdown-item fw-semibold py-2" href="{{ route('admin.users.listar') }}">Gestion de Usuarios</a></li>
                                 <li><a class="dropdown-item fw-semibold py-2" href="#">Roles</a></li>
                                 <li><a class="dropdown-item fw-semibold py-2" href="#">Permisos</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown position-relative mx-1">
+                            <a class="nav-link dropdown-toggle text-white fw-semibold px-3 py-3 d-flex align-items-center justify-content-center"
+                               href="#" id="menuAdmin" role="button" data-bs-toggle="dropdown"
+                               aria-expanded="false"
+                               style="transition: all 0.3s ease; border-radius: 0.4rem;"
+                               onmouseover="this.style.backgroundColor='#1E9D52'; this.style.boxShadow='0 2px 8px rgba(0,0,0,0.15)';"
+                               onmouseout="this.style.backgroundColor='#2271B4'; this.style.boxShadow='none';">
+                                <i class="bi bi-gear-fill me-2 fs-5"></i>Ajustes
+                            </a>
+                            <ul class="dropdown-menu shadow border-0 rounded-3 mt-1" style="min-width:200px;">
+                                <li><a class="dropdown-item fw-semibold py-2" href="#">Configuración General del Sistema</a></li>
+                                <li><a class="dropdown-item fw-semibold py-2" href="#">Parametros de Producción y Planeación</a></li>
+                                <li><a class="dropdown-item fw-semibold py-2" href="#">Gestión de Plantillas de Reportes e Importación</a></li>
+                                <li><a class="dropdown-item fw-semibold py-2" href="#">Seguridad</a></li>
                             </ul>
                         </li>
                         @endrole
