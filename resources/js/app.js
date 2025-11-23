@@ -1,3 +1,3 @@
 import './bootstrap';
-import './cambiarEstado.js';
-import './cambiarEstadoMaterial.js';
+import './usuarios/cambiarEstado.js';
+import './material/cambiarEstadoMaterial.js';

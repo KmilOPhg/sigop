@@ -1,6 +1,4 @@
 import Swal from "sweetalert2";
-import toast from "bootstrap/js/src/toast.js";
-
 document.addEventListener("DOMContentLoaded", function() {
     const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
@@ -40,7 +38,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
             if (response.ok) {
                 button.textContent = nuevoEstado.charAt(0).toUpperCase() + nuevoEstado.slice(1);
-                button.dataset.estado = nuevoEstado === 'Activo' ? 'Inactivo' : 'Activo';
+                button.dataset.estado = nuevoEstado === 'activo' ? 'inactivo' : 'activo';
                 button.classList.toggle('btn-success');
                 button.classList.toggle('btn-danger');
 
@@ -82,15 +80,40 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     //Funcion inicializar botones de cambiar estado
-    function inicializarBotones() {
-        document.querySelectorAll('.toggleEstadoBtn').forEach(button => {
-            button.addEventListener('click', function () {
-                const materialId = this.dataset.materialId;
-                const nuevoEstado = this.dataset.estado;
-                cambiarEstado(materialId, nuevoEstado, this)
-            });
-        });
-    }
+    document.addEventListener('click', function(e) {
 
-    inicializarBotones();
+        // PAGINACIÓN O AJAX LOAD
+        const link = e.target.closest('a.page-link, a.ajax-load');
+        if (link) {
+            e.preventDefault();
+
+            fetch(link.href, {
+                headers: { "X-Requested-With": "XMLHttpRequest" }
+            })
+                .then(r => r.text())
+                .then(html => {
+                    if (link.classList.contains('page-link')) {
+                        document.querySelector('#contenedor_tabla').innerHTML = html;
+                    }
+
+                    if (link.classList.contains('ajax-load')) {
+                        document.querySelector('#all-table').innerHTML = html;
+                    }
+                })
+                .catch(console.error);
+
+            return;
+        }
+
+        // ---------------------------
+        // BOTÓN CAMBIAR ESTADO
+        // ---------------------------
+        const toggleBtn = e.target.closest('.toggleEstadoBtn');
+        if (toggleBtn) {
+            const materialId = toggleBtn.dataset.materialId;
+            const nuevoEstado = toggleBtn.dataset.estado;
+            cambiarEstado(materialId, nuevoEstado, toggleBtn).then(r => {r});
+        }
+
+    });
 });

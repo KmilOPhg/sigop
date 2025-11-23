@@ -8,6 +8,7 @@ use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\View\Factory;
@@ -17,38 +18,45 @@ class MaterialController extends Controller
 {
 
     /**
-     * @return Factory|View|RedirectResponse
+     * @return string
      *
      * Funcion listar materiales
      */
-    function listarMaterial() : Factory | View | RedirectResponse
+    function listarMaterial(Request $request, string $estado = 'activo') : View | string
     {
         try {
-            $materiales = Material::with('user')->where('estado', 'activo')->get();
+            $materiales = Material::with('user')
+                ->where('estado', $estado)
+                ->orderBy('created_at', 'desc')
+                ->paginate(13);
 
             $materialesInactivosCount = Material::where('estado', 'inactivo')->count();
 
-            $modo = 'activo';
+            $modo = $estado; // activo o inactivo
 
-            Log::info('Listando materiales con modo: ' . $modo);
+            Log::info("Listando materiales con modo: $modo");
+
+            if ($request->ajax()) {
+
+                //Si es paginacion
+                if ($request->has('page')) {
+                    return view('admin.inventario.componentes.tabla_material', compact(
+                        'materiales',
+                        'materialesInactivosCount',
+                        'modo'
+                    ))->render();
+                }
+
+                //Si no, entonces trae los activos o inactivos
+                return view('admin.inventario.componentes.header_tabla_material', compact(
+                    'materiales',
+                    'materialesInactivosCount',
+                    'modo'
+                ))->render();
+            }
+
             return view('admin.inventario.materiales', compact('materiales', 'materialesInactivosCount', 'modo'));
-        } catch (Exception $e) {
-            Log::info('Error al listar materiales: ' . $e->getMessage());
-            return back()->withErrors([$e->getMessage()]);
-        }
-    }
 
-    function listarMaterialesInabilitados() : Factory | View | RedirectResponse
-    {
-        try {
-            $materiales = Material::with('user')->where('estado', 'inactivo')->get();
-
-            $materialesInactivosCount = Material::where('estado', 'inactivo')->count();
-
-            $modo = 'inactivo';
-
-            Log::info('Listando materiales con modo: ' . $modo);
-            return view('admin.inventario.materiales', compact('materiales', 'materialesInactivosCount', 'modo'));
         } catch (Exception $e) {
             Log::info('Error al listar materiales: ' . $e->getMessage());
             return back()->withErrors([$e->getMessage()]);
@@ -71,7 +79,7 @@ class MaterialController extends Controller
             Material::create([
                 'nombre_material' => $request->nombre_material,
                 'unidad_medida' => $request->unidad_medida,
-                'estado' => 'Activo',
+                'estado' => 'activo',
                 'user_id' => auth()->id(),
             ]);
 
