@@ -69,6 +69,7 @@
                                             </span>
                                         </td>
 
+                                        {{-- Estado de material --}}
                                         <td>
                                             <button
                                                 class="btn toggleEstadoBtn badge {{ $material->estado === 'activo' ? 'btn-success' : 'btn-danger' }} text-white fw-semibold px-3 py-2"

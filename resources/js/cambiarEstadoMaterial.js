@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
             if (response.ok) {
                 button.textContent = nuevoEstado.charAt(0).toUpperCase() + nuevoEstado.slice(1);
-                button.dataset.estado = nuevoEstado === 'activo' ? 'inactivo' : 'activo';
+                button.dataset.estado = nuevoEstado === 'Activo' ? 'Inactivo' : 'Activo';
                 button.classList.toggle('btn-success');
                 button.classList.toggle('btn-danger');
 
