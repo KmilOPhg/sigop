@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('referencias', function (Blueprint $table) {
             $table->id();
-            $table->integer('ref')->nullable();
+            $table->integer('ref')->unique();
             $table->boolean('cuello_botella')->default(false);
             $table->integer('cant_diario')->nullable();
             $table->foreignId('ordenes_produccion_id')->constrained('ordenes_produccion');

@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('secciones', function (Blueprint $table) {
             $table->id();
+            $table->integer('codigo')->unique();
             $table->string('nombre', 100)->nullable();
             $table->foreignId('ordenes_produccion_id')->constrained('ordenes_produccion');
             $table->timestamps();

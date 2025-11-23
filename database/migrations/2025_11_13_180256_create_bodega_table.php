@@ -11,9 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('bodega', function (Blueprint $table) {
-            $table->id();
-            $table->string('nombre', 50)->nullable();
+        Schema::create('bodega', function (Blueprint $table)
+        {
+            $table->id(); //BIGINT(20), INDEX, AUTOINCREMENT, UNIQUE, PK
+            $table->string('referencia')->unique(); // UNIQUE, INDEX
+            $table->string('descripción', 50)->nullable();
+            $table->string('estado', 50)->default('activo');
             $table->timestamps();
         });
     }

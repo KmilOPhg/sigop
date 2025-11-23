@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('materiales', function (Blueprint $table) {
             $table->id();
+            $table->string('item_material')->unique();
             $table->string('nombre_material', 50)->nullable();
             $table->string('unidad_medida', 5)->nullable();
             $table->string('estado', 50)->default('Activo');

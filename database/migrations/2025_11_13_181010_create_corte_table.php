@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('corte', function (Blueprint $table) {
             $table->id();
+            $table->string('codigo')->unique();
             $table->string('nombre',50)->nullable();
             $table->integer('cant_diario')->nullable();
             $table->foreignId('referencia_id')->constrained('referencias');

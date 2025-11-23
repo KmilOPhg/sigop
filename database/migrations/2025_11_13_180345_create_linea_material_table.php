@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('linea_material', function (Blueprint $table) {
             $table->id();
+            $table->string('codigo')->unique();
             $table->string('nombre', 50)->nullable();
             $table->integer('cant_diaria')->nullable();
             $table->timestamps();

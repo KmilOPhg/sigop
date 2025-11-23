@@ -18,7 +18,9 @@ class MaterialController extends Controller
 {
 
     /**
-     * @return string
+     * @param Request $request
+     * @param string $estado
+     * @return View|string Funcion listar materiales
      *
      * Funcion listar materiales
      */
