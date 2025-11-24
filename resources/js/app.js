@@ -1,3 +1,3 @@
 import './bootstrap';
 import './usuarios/cambiarEstadoUsuarios.js';
-import './material/cambiarEstadoMaterial.js';
+import './scriptsToSPA.js';

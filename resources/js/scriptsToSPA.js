@@ -1,14 +1,19 @@
 import Swal from "sweetalert2";
 
+//Single Page Application
+//Aplicación de una sola página
 document.addEventListener("DOMContentLoaded", () => {
 
     const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
+    //Agarrar la seccion en la que se está
+    const seccion = document.querySelector('.page').dataset.seccion;
+    console.log('Sección detectada', seccion);
+
     // Detectar automáticamente cuál contenedor existe
     function getTableContainer() {
-        return document.querySelector("#contenedor_tabla, #contenedor_tabla_bodega");
+        return document.querySelector("#contenedor_tabla_materiales, #contenedor_tabla_bodega");
     }
-    //const apiBase = tableContainer.dataset.api; // "bodegas" o "materiales"
 
     async function cambiarEstado(id, nuevoEstado, seccion, button) {
         try {
@@ -31,6 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 },
                 body: JSON.stringify({ estado: nuevoEstado })
             });
+            console.log('Ruta: ', res.url);
 
             if (!res.ok) {
                 alert("Error al cambiar estado.");
@@ -39,7 +45,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             button.closest("tr")?.remove();
 
-            Swal.fire({
+            await Swal.fire({
                 icon: "success",
                 title: `Estado cambiado a ${nuevoEstado}`,
                 toast: true,
@@ -80,7 +86,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
                     // ajax-load = recarga toda la card (vista completa)
                     if (link.classList.contains("ajax-load")) {
-                        document.querySelector(".card").outerHTML = html;
+                        document.querySelector(".card").innerHTML = html;
                     }
                 });
 
@@ -95,9 +101,9 @@ document.addEventListener("DOMContentLoaded", () => {
             cambiarEstado(
                 toggleBtn.dataset.id,
                 toggleBtn.dataset.estado,
-                toggleBtn.dataset.seccion,
+                seccion,
                 toggleBtn
-            );
+            ).then();
         }
 
     });

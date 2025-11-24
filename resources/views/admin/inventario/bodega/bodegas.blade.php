@@ -6,7 +6,7 @@
         <div class="row justify-content-center">
             <div class="col-lg-10">
 
-                <div id="all-table" data-api="bodegas">
+                <div class="page" data-seccion="bodegas">
                     @include('admin.inventario.componentes.componentes_bodegas.header_tabla_bodegas')
                 </div>
             </div>

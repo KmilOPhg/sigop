@@ -33,7 +33,6 @@
                 <button
                     class="btn toggleEstadoBtn badge {{ $bodega->estado === 'activo' ? 'btn-success' : 'btn-danger' }} text-white fw-semibold px-3 py-2"
                     data-id="{{ $bodega->id }}"
-                    data-seccion="bodegas"
                     data-estado="{{ $bodega->estado === 'activo' ? 'inactivo' : 'activo' }}">
                     {{ ucfirst($bodega->estado) }}
                 </button>

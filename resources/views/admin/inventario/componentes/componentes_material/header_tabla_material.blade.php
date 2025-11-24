@@ -26,7 +26,7 @@
     <div class="card-body bg-light">
         @include('partials.errorsuccess')
 
-        <div id="contenedor_tabla">
+        <div id="contenedor_tabla_materiales">
             @include('admin.inventario.componentes.componentes_material.tabla_material')
         </div>
     </div>
