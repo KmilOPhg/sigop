@@ -11,7 +11,7 @@ class Bodega extends Model
     protected $table = 'bodega';
 
     protected $fillable = [
-        'descripción',
+        'descripcion',
         'referencia',
         'estado'
     ];

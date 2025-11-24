@@ -7,8 +7,8 @@
             <div class="card shadow-lg border-0 rounded-4">
 
                 <div class="card-header bg-white text-center border-0 pt-4 pb-0">
-                    <h3 class="fw-bold mb-1" style="color:#2271B4;">Crear Material</h3>
-                    <p class="text-muted">Registra un nuevo material en el sistema</p>
+                    <h3 class="fw-bold mb-1" style="color:#2271B4;">Editar Bodega</h3>
+                    <p class="text-muted">Editar información de una Bodega existente</p>
                 </div>
 
                 <div class="card-body px-4">
@@ -19,25 +19,26 @@
                         </div>
                     @endif
 
-                    <form method="POST" action="{{ route('admin.materiales.crear.post') }}">
+                    <form action="{{ route('admin.bodegas.actualizar', $bodega) }}">
                         @csrf
+                        @method('PUT')
 
                         <div class="mb-3">
-                            <label class="form-label fw-semibold text-secondary">Nombre del material</label>
+                            <label class="form-label fw-semibold text-secondary">Codigo</label>
 
                             <div class="input-group shadow-sm rounded-3">
                             <span class="input-group-text bg-white border-end-0">
                                 <i class="bi bi-box text-primary"></i>
                             </span>
-
                                 <input type="text"
-                                       name="nombre_material"
-                                       class="form-control border-start-0 @error('nombre_material') is-invalid @enderror"
-                                       placeholder="Ej. Cordón 120cm"
+                                       id="referencia"
+                                       name="referencia"
+                                       value="{{ old('name',$bodega->referencia) }}"
+                                       class="form-control border-start-0 @error('referencia') is-invalid @enderror"
                                        required>
                             </div>
 
-                            @error('nombre_material')
+                            @error('referencia')
                             <span class="invalid-feedback d-block mt-1">
                                 <i class="bi bi-exclamation-circle"></i> {{ $message }}
                             </span>
@@ -45,39 +46,21 @@
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label fw-semibold text-secondary">Unidad de medida</label>
+                            <label class="form-label fw-semibold text-secondary">Descripción</label>
 
                             <div class="input-group shadow-sm rounded-3">
                             <span class="input-group-text bg-white border-end-0">
                                 <i class="bi bi-rulers text-primary"></i>
                             </span>
-
-                                <select name="unidad_medida"
-                                        class="form-select border-start-0 @error('unidad_medida') is-invalid @enderror"
-                                        required>
-                                    <option value="" disabled selected>Selecciona una unidad</option>
-                                    <option value="UND">UND</option>
-                                    <option value="KLS">KLS</option>
-                                    <option value="MTS">MTS</option>
-                                    <option value="LAM">LAM</option>
-                                    <option value="PAR">PAR</option>
-                                    <option value="DCM">DCM</option>
-                                    <option value="LTS">LTS</option>
-                                    <option value="CM">CM</option>
-                                    <option value="RLL">RLL</option>
-                                    <option value="GLS">GLS</option>
-                                    <option value="LAT">LAT</option>
-                                    <option value="LBS">LBS</option>
-                                    <option value="BTS">BTS</option>
-                                    <option value="MILFS">MILLS</option>
-                                    <option value="GRS">GRS</option>
-                                    <option value="DOC">DOC</option>
-                                    <option value="GRAM">GRAM</option>
-                                    <option value="GARR">GARR</option>
-                                </select>
+                                <input type="text"
+                                       id="descripcion"
+                                       name="descripcion"
+                                       value="{{ old('name',$bodega->descripcion) }}"
+                                       class="form-control border-start-0 @error('descripcion') is-invalid @enderror"
+                                       required>
                             </div>
 
-                            @error('unidad_medida')
+                            @error('descripcion')
                             <span class="invalid-feedback d-block mt-1">
                                 <i class="bi bi-exclamation-circle"></i> {{ $message }}
                             </span>
@@ -88,7 +71,7 @@
                             <button type="submit"
                                     class="btn text-white fw-semibold py-2 shadow-sm"
                                     style="background: linear-gradient(90deg, #2271B4, #4AA0E6); border-radius: 8px;">
-                                <i class="bi bi-check-circle me-1"></i> Guardar Material
+                                <i class="bi bi-check-circle me-1"></i> Actualizar Bodega
                             </button>
                         </div>
 
@@ -96,7 +79,7 @@
                 </div>
 
                 <div class="card-footer bg-white border-0 text-center py-3">
-                    <a href="{{ route('admin.materiales.listar') }}"
+                    <a href="{{ route('admin.bodegas.listar') }}"
                        class="text-decoration-none fw-semibold"
                        style="color:#4AA0E6;">
                         <i class="bi bi-arrow-left"></i> Volver a la lista

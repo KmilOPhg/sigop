@@ -36,7 +36,8 @@
             <td>
                 <button
                     class="btn toggleEstadoBtn badge {{ $material->estado === 'activo' ? 'btn-success' : 'btn-danger' }} text-white fw-semibold px-3 py-2"
-                    data-material-id="{{ $material->id }}"
+                    data-id="{{ $material->id }}"
+                    data-seccion="materiales"
                     data-estado="{{ $material->estado === 'activo' ? 'inactivo' : 'activo' }}">
                     {{ ucfirst($material->estado) }}
                 </button>

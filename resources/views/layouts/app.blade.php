@@ -90,7 +90,8 @@
                                     'items' => [
                                         ['label' => 'Stock mínimo', 'href' => '#'],
                                         ['label' => 'Alertas de bajo stock', 'href' => '#'],
-                                        ['label' => 'Materiales', 'href' => route('admin.materiales.listar')]
+                                        ['label' => 'Materiales', 'href' => route('admin.materiales.listar')],
+                                        ['label' => 'Bodegas', 'href' => route('admin.bodegas.listar')]
                                     ]
                                 ],
                                 [

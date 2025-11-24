@@ -6,8 +6,8 @@
         <div class="row justify-content-center">
             <div class="col-lg-10">
 
-                <div id="all-table">
-                    @include('admin.inventario.componentes.header_tabla_material')
+                <div id="all-table" data-api="bodegas">
+                    @include('admin.inventario.componentes.componentes_bodegas.header_tabla_bodegas')
                 </div>
             </div>
         </div>

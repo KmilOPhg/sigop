@@ -2,35 +2,75 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Bodega;
 use App\Models\User;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Spatie\Permission\Models\Permission;
-use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class BodegaController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function verBodega(): Factory|View
+    public function verBodega(Request $request, string $estado = 'activo'): View|string
     {
-        $users = User::with('roles', 'permissions')->get();
-        return view('admin.user.index', compact('users'));
+        try {
+            $bodegas = Bodega::with('inventarios')
+                ->where('estado', $estado)
+                ->orderBy('created_at', 'desc')
+                ->paginate(12);
+
+            $bodegasInactivosCount = Bodega::where('estado', 'inactivo')->count();
+
+            $modo = $estado; // activo o inactivo
+
+            Log::info("Listando bodegas con modo: $modo");
+
+            if ($request->ajax()) {
+
+                //Si es paginacion
+                if ($request->has('page')) {
+                    return view('admin.inventario.componentes.componentes_bodegas.tabla_bodega', compact(
+                        'bodegas',
+                        'bodegasInactivosCount',
+                        'modo'
+                    ))->render();
+                }
+
+                //Si no, entonces trae los activos o inactivos
+                return view('admin.inventario.componentes.componentes_bodegas.header_tabla_bodegas', compact(
+                    'bodegas',
+                    'bodegasInactivosCount',
+                    'modo'
+                ))->render();
+            }
+
+            return view('admin.inventario.bodega.bodegas', compact(
+                'bodegas',
+                'bodegasInactivosCount',
+                'modo'));
+        } catch (\Exception $e) {
+            return back()->withErrors(['error' => 'Error al cargar las bodegas: ' . $e->getMessage()]);
+        }
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function crearBodegaForm(): Factory|View
+    public function crearBodegaForm(): Factory|View|RedirectResponse
     {
-        $roles = Role::all();
-        $permissions = Permission::all();
+        try {
+            $bodega = Bodega::with('inventarios')->get();
 
-        return view('admin.user.create', compact('roles', 'permissions'));
+            return view('admin.inventario.bodega.crear_bodega', compact('bodega'));
+        } catch (\Exception $e) {
+            return back()->withErrors(['error' => 'Error al cargar el formulario: ' . $e->getMessage()]);
+        }
     }
 
     /**
@@ -38,76 +78,96 @@ class BodegaController extends Controller
      */
     public function crearBodega(Request $request): RedirectResponse
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8',
-            'roles' => 'nullable|array',
-            'permissions' => 'nullable|array',
-        ]);
+        try {
+            DB::beginTransaction();
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => bcrypt($request->password),
-        ]);
+            $request->validate([
+                'referencia' => 'required|string|max:255|unique:bodega,referencia',
+                'descripcion' => 'required|string|max:50',
+                'estado' => 'nullable|string|in:activo,inactivo',
+            ]);
 
-        $user->syncRoles($request->roles ?? []);
-        $user->syncPermissions($request->permissions ?? []);
+            Bodega::create([
+                'referencia' => $request->referencia,
+                'descripcion' => $request->descripcion,
+                'estado' => $request->estado ?? 'activo',
+            ]);
 
-        return redirect()->route('admin.users.listar')->with('success', 'Usuario creado correctamente');
+            DB::commit();
+
+            return redirect()->route('admin.bodegas.listar')->with('success', 'Bodega creada correctamente.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->withErrors(['error' => 'Error al crear la bodega: ' . $e->getMessage()]);
+        }
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function editarBodega(User $user): Factory|View
+    public function editarBodega(Bodega $bodega): Factory|View|RedirectResponse
     {
-        $roles = Role::all();
-        $permissions = Permission::all();
-
-        return view('admin.user.edit', compact('user', 'roles', 'permissions'));
+        try {
+            return view('admin.inventario.bodega.editar_bodega', compact('bodega'));
+        } catch (\Exception $e) {
+            return back()->withErrors('Error al mostrar el formulario: ' . $e->getMessage());
+        }
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function actualizarBodega(Request $request, User $user): RedirectResponse
+    public function actualizarBodega(Request $request, Bodega $bodega): RedirectResponse
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
-            'password' => 'nullable|string|min:8',
-            'estado' => 'required|string|in:activo,inactivo',
-            'roles' => 'nullable|array',
-            'permissions' => 'nullable|array',
-        ]);
+        try {
 
-        $user->update([
-            'name' => $request->name,
-            'email' => $request->email,
-            'estado' => $request->estado,
-            'password' => $request->password ? bcrypt($request->password) : $user->password,
-        ]);
+            DB::beginTransaction();
 
-        $user->syncRoles($request->roles ?? []);
-        $user->syncPermissions($request->permissions ?? []);
+            $request->validate([
+                'descripcion' => 'required|string|max:50',
+                'estado' => 'nullable|string|in:activo,inactivo',
+            ]);
 
-        return redirect()->route('admin.users.listar')->with('success', 'Usuario actualizado correctamente');
+            $bodega->update([
+                'referencia' => $bodega->referencia,
+                'descripcion' => $request->descripcion,
+                'estado' => $request->estado ?? 'activo',
+            ]);
+
+            DB::commit();
+
+            return redirect()->route('admin.bodegas.listar')->with('success', 'Bodega actualizada correctamente.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->withErrors(['error' => 'Error al actualizar la bodega: ' . $e->getMessage()]);
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function inhabilitarBodega(Request $request, User $user): JsonResponse
+    public function inhabilitarBodega(Request $request, Bodega $bodega): JsonResponse
     {
-        $bodega->update(['estado' => $request->estado]);
+        try {
 
-        return response()->json([
-            'message' => 'Bodega inhabilitada correctamente.',
-            'status' => 'success',
-            'estado' => $bodega->estado,
-        ]);
-        //return redirect()->route('admin.users.listar')->with('success', 'Usuario eliminado correctamente');
+            //Obtener el estado del bodega desde la solicitud
+            $bodega->update(['estado' => $request->estado]);
+
+            //Retornar respuesta JSON de succes
+            return response()->json([
+                'message' => 'Bodega desactivada correctamente.',
+                'status' => 'success',
+                'estado' => $bodega->estado,
+            ], 200);
+
+        } catch (\Exception $e) {
+            //Retornar respuesta JSON de error
+            Log::error('Error al desactivar la bodega: ' . $e->getMessage());
+
+            return response()->json([
+                'message' => 'Error al desactivar la bodega: ' . $e->getMessage(),
+                'status' => 'error',
+            ], 500);
+        }
     }
 }

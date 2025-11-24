@@ -30,7 +30,7 @@ class MaterialController extends Controller
             $materiales = Material::with('user')
                 ->where('estado', $estado)
                 ->orderBy('created_at', 'desc')
-                ->paginate(13);
+                ->paginate(12);
 
             $materialesInactivosCount = Material::where('estado', 'inactivo')->count();
 
@@ -42,7 +42,7 @@ class MaterialController extends Controller
 
                 //Si es paginacion
                 if ($request->has('page')) {
-                    return view('admin.inventario.componentes.tabla_material', compact(
+                    return view('admin.inventario.componentes.componentes_material.tabla_material', compact(
                         'materiales',
                         'materialesInactivosCount',
                         'modo'
@@ -50,14 +50,14 @@ class MaterialController extends Controller
                 }
 
                 //Si no, entonces trae los activos o inactivos
-                return view('admin.inventario.componentes.header_tabla_material', compact(
+                return view('admin.inventario.componentes.componentes_material.header_tabla_material', compact(
                     'materiales',
                     'materialesInactivosCount',
                     'modo'
                 ))->render();
             }
 
-            return view('admin.inventario.materiales', compact('materiales', 'materialesInactivosCount', 'modo'));
+            return view('admin.inventario.material.materiales', compact('materiales', 'materialesInactivosCount', 'modo'));
 
         } catch (Exception $e) {
             Log::info('Error al listar materiales: ' . $e->getMessage());
@@ -79,6 +79,7 @@ class MaterialController extends Controller
 
             //Crear el material
             Material::create([
+                'item_material' => $request->item,
                 'nombre_material' => $request->nombre_material,
                 'unidad_medida' => $request->unidad_medida,
                 'estado' => 'activo',
@@ -105,7 +106,7 @@ class MaterialController extends Controller
         try {
             $material = Material::with('user')->get();
 
-            return view('admin.inventario.crear_material' , compact('material'));
+            return view('admin.inventario.material.crear_material' , compact('material'));
         } catch (Exception $e) {
             return back()->withErrors('Error al mostrar el formulario: ' . $e->getMessage());
         }
@@ -120,7 +121,7 @@ class MaterialController extends Controller
     function editarMaterial(Material $material) : Factory | View | RedirectResponse
     {
         try {
-            return view('admin.inventario.editar_material', compact('material'));
+            return view('admin.inventario.material.editar_material', compact('material'));
         } catch (Exception $e) {
             return back()->withErrors('Error al mostrar el formulario: ' . $e->getMessage());
         }
@@ -137,6 +138,7 @@ class MaterialController extends Controller
     {
         try {
             $material->update([
+                'item_material' => $material->item_material,
                 'nombre_material' => $request->nombre_material,
                 'unidad_medida' => $request->unidad_medida,
                 'estado' => $request->estado ? $request->estado : $material->estado,

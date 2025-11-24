@@ -15,7 +15,7 @@ return new class extends Migration
         {
             $table->id(); //BIGINT(20), INDEX, AUTOINCREMENT, UNIQUE, PK
             $table->string('referencia')->unique(); // UNIQUE, INDEX
-            $table->string('descripción', 50)->nullable();
+            $table->string('descripcion', 50)->nullable();
             $table->string('estado', 50)->default('activo');
             $table->timestamps();
         });
