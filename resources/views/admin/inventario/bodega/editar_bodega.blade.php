@@ -24,18 +24,19 @@
                         @method('PUT')
 
                         <div class="mb-3">
-                            <label class="form-label fw-semibold text-secondary">Codigo</label>
+                            <label class="form-label fw-semibold text-secondary">Código</label>
 
                             <div class="input-group shadow-sm rounded-3">
-                            <span class="input-group-text bg-white border-end-0">
-                                <i class="bi bi-box text-primary"></i>
-                            </span>
+                                <span class="input-group-text bg-white border-end-0">
+                                    <i class="bi bi-box text-primary"></i>
+                                </span>
                                 <input type="text"
                                        id="referencia"
                                        name="referencia"
                                        value="{{ old('name',$bodega->referencia) }}"
                                        class="form-control border-start-0 @error('referencia') is-invalid @enderror"
-                                       required>
+                                       required
+                                />
                             </div>
 
                             @error('referencia')

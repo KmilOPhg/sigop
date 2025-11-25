@@ -4,179 +4,63 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\MaterialValidatorRequest;
 use App\Models\Material;
-use Exception;
-use Illuminate\Http\JsonResponse;
+use App\Http\Repositories\MaterialRepository;
+use App\Http\Services\MaterialService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
-use Illuminate\View\Factory;
-use Illuminate\View\View;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 
 class MaterialController extends Controller
 {
+    protected MaterialRepository $materialRepository;
+    protected MaterialService $materialService;
 
-    /**
-     * @param Request $request
-     * @param string $estado
-     * @return View|string Funcion listar materiales
-     *
-     * Funcion listar materiales
-     */
-    function listarMaterial(Request $request, string $estado = 'activo') : View | string
+    public function __construct(MaterialRepository $materialRepository, MaterialService $materialService)
+    {
+        $this->materialRepository = $materialRepository;
+        $this->materialService = $materialService;
+    }
+
+    public function listarMaterial(Request $request, $estado = 'activo'): Factory|View|string|RedirectResponse
     {
         try {
-            $materiales = Material::with('user')
-                ->where('estado', $estado)
-                ->orderBy('created_at', 'desc')
-                ->paginate(12);
-
-            $materialesInactivosCount = Material::where('estado', 'inactivo')->count();
-
-            $modo = $estado; // activo o inactivo
-
-            Log::info("Listando materiales con modo: $modo");
-
-            if ($request->ajax()) {
-
-                //Si es paginacion
-                if ($request->has('page')) {
-                    return view('admin.inventario.componentes.componentes_material.tabla_material', compact(
-                        'materiales',
-                        'materialesInactivosCount',
-                        'modo'
-                    ))->render();
-                }
-
-                //Si no, entonces trae los activos o inactivos
-                return view('admin.inventario.componentes.componentes_material.header_tabla_material', compact(
-                    'materiales',
-                    'materialesInactivosCount',
-                    'modo'
-                ))->render();
-            }
-
-            return view('admin.inventario.material.materiales', compact('materiales', 'materialesInactivosCount', 'modo'));
-
-        } catch (Exception $e) {
-            Log::info('Error al listar materiales: ' . $e->getMessage());
-            return back()->withErrors([$e->getMessage()]);
+            return $this->materialService->listarMaterial($estado, $request);
+        } catch (\Exception $e) {
+            return back()->withErrors(['error' => 'Error al listar materiales: ' . $e->getMessage()]);
         }
     }
 
-    /**
-     * @param MaterialValidatorRequest $request
-     * @return RedirectResponse
-     *
-     * Funcion crear material
-     */
-    function crearMaterial(MaterialValidatorRequest $request) : RedirectResponse
+    public function crearMaterialForm(): View|Factory|RedirectResponse
     {
         try {
-
-            DB::beginTransaction();
-
-            //Crear el material
-            Material::create([
-                'item_material' => $request->item,
-                'nombre_material' => $request->nombre_material,
-                'unidad_medida' => $request->unidad_medida,
-                'estado' => 'activo',
-                'user_id' => auth()->id(),
-            ]);
-
-            DB::commit();
-
-            return redirect()->route('admin.materiales.listar')->with('success', 'Material creado exitosamente.');
-        } catch (Exception $e) {
-            DB::rollBack();
-            Log::error('Error al crear material: ' . $e->getMessage());
-            return back()->withErrors([$e->getMessage()]);
+            return $this->materialService->crearMaterialForm();
+        } catch (\Exception $e) {
+            return back()->withErrors(['error' => 'Error al cargar el formulario: ' . $e->getMessage()]);
         }
     }
 
-    /**
-     * @return Factory|View|RedirectResponse Funcion mostrar formulario de crear material
-     *
-     * Funcion mostrar formulario de crear material
-     */
-    function crearMaterialForm() : Factory | View | RedirectResponse
+    public function crearMaterial(MaterialValidatorRequest $request): RedirectResponse
     {
-        try {
-            $material = Material::with('user')->get();
-
-            return view('admin.inventario.material.crear_material' , compact('material'));
-        } catch (Exception $e) {
-            return back()->withErrors('Error al mostrar el formulario: ' . $e->getMessage());
-        }
+        return $this->materialService->crearMaterial($request);
     }
 
-    /**
-     * @param Material $material
-     * @return Factory|View|RedirectResponse
-     *
-     * Funcion mostrar formulario de editar material
-     */
-    function editarMaterial(Material $material) : Factory | View | RedirectResponse
+    public function editarMaterial(Material $material): View|Factory|RedirectResponse
     {
         try {
             return view('admin.inventario.material.editar_material', compact('material'));
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return back()->withErrors('Error al mostrar el formulario: ' . $e->getMessage());
         }
     }
 
-    /**
-     * @param MaterialValidatorRequest $request
-     * @param Material $material
-     * @return RedirectResponse
-     *
-     * Funcion actualizar material
-     */
-    function actualizarMaterial(MaterialValidatorRequest $request, Material $material) : RedirectResponse
+    public function actualizarMaterial(MaterialValidatorRequest $request, Material $material): RedirectResponse
     {
-        try {
-            $material->update([
-                'item_material' => $material->item_material,
-                'nombre_material' => $request->nombre_material,
-                'unidad_medida' => $request->unidad_medida,
-                'estado' => $request->estado ? $request->estado : $material->estado,
-                'user_id' => auth()->id(),
-            ]);
-
-            return redirect()->route('admin.materiales.listar')->with('success', 'Material actualizado exitosamente.');
-        } catch (Exception $e) {
-            return back()->withErrors('Error al actualizar el material: ' . $e->getMessage());
-        }
+        return $this->materialService->actualizarMaterial($request, $material);
     }
 
-    /**
-     * @param Request $request
-     * @param Material $material
-     * @return JsonResponse
-     *
-     * Funcion inhabilitar material
-     */
-    public function inhabilitarMaterial(Request $request, Material $material) : JsonResponse
+    public function inhabilitarMaterial(Request $request, Material $material)
     {
-        try {
-            //Obtener el estado del material desde la solicitud
-            $material->update(['estado' => $request->estado]);
-
-            //Retornar respuesta JSON de succes
-            return response()->json([
-                'message' => 'Material desactivado correctamente.',
-                'status' => 'success',
-                'estado' => $material->estado,
-            ], 200);
-        } catch (Exception $e) {
-            //Retornar respuesta JSON de error
-            Log::error('Error al desactivar el material: ' . $e->getMessage());
-
-            return response()->json([
-                'message' => 'Error al desactivar el material: ' . $e->getMessage(),
-                'status' => 'error',
-            ], 500);
-        }
+        return $this->materialService->inhabilitarMaterial($request, $material);
     }
 }
