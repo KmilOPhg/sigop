@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\BodegaController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\PublicControler;
@@ -23,7 +24,10 @@ Route::get('/', [PublicControler::class, 'index']);
 //Rutas admin
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->group(function () {
     //admin/dashboard
-    Route::get('/dashboard', [HomeController::class, 'adminDashboard'])->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard/data', [DashboardController::class, 'data'])->name('dashboard.data');
+    Route::get('/dashboard/bodegas/{referencia}', [DashboardController::class, 'getBodegas']);
+    Route::get('/dashboard/materiales/{item}', [DashboardController::class, 'getMateriales']);
 
     //admin/users
     Route::get('/users', [UserController::class, 'verUsuarios'])->name('users.listar');
