@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class BodegaValidatorRequest extends FormRequest
 {
@@ -23,7 +24,7 @@ class BodegaValidatorRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'referencia' => 'required|string|max:255|unique:bodega,referencia',
+            'referencia' => 'required|string|max:255|' . Rule::unique('bodega', 'referencia')->ignore(optional($this->route('bodega'))->id),
             'descripcion' => 'required|string|max:50',
             //'estado' => 'nullable|string|in:activo,inactivo',
         ];
@@ -33,7 +34,8 @@ class BodegaValidatorRequest extends FormRequest
     {
         return [
             'referencia.required' => 'La referencia es obligatoria',
-            'descripcion.required' => 'La descripcion es obligatoria'
+            'referencia.unique' => 'Ya existe una bodega con esta referencia.',
+            'descripcion.required' => 'La descripcion es obligatoria',
         ];
     }
 }

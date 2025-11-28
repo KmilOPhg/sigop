@@ -92,12 +92,12 @@ class BodegaController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function actualizarBodega(Request $request, Bodega $bodega, BodegaRepository $bodegaRepository): RedirectResponse
+    public function actualizarBodega(BodegaValidatorRequest $request, Bodega $bodega): RedirectResponse
     {
         try {
             DB::beginTransaction();
 
-            $bodegaRepository->actualizarBodega($request, $bodega);
+            $this->bodegaRepository->actualizarBodega($request, $bodega);
 
             DB::commit();
             return redirect()->route('admin.bodegas.listar')->with('success', 'Bodega actualizada correctamente.');

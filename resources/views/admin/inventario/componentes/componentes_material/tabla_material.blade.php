@@ -3,7 +3,7 @@
 
         <thead style="background-color:#4AA0E6; color:#fff;">
         <tr>
-            <th class="text-uppercase small fw-semibold px-3">ID</th>
+            <th class="text-uppercase small fw-semibold px-3">Item</th>
             <th class="text-uppercase small fw-semibold px-3">Material</th>
             <th class="text-uppercase small fw-semibold px-3">Unidad</th>
             <th class="text-uppercase small fw-semibold px-3">Estado</th>
@@ -18,7 +18,7 @@
         <tr class="bg-white border-bottom {{ $material->estado === 'inactivo' ? 'opacity-50' : '' }}">
 
             {{-- Columna ID --}}
-            <td class="fw-semibold">{{ $material->id }}</td>
+            <td class="fw-semibold">{{ $material->item_material }}</td>
 
             <td class="fw-semibold text-start ps-3">
                 <i class="bi bi-tag-fill me-1" style="color:#2271B4;"></i>

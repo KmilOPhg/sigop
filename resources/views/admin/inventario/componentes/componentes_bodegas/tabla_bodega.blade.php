@@ -3,7 +3,6 @@
 
         <thead style="background-color:#4AA0E6; color:#fff;">
         <tr>
-            <th class="text-uppercase small fw-semibold px-3">ID</th>
             <th class="text-uppercase small fw-semibold px-3">Codigo</th>
             <th class="text-uppercase small fw-semibold px-3">Descripcion</th>
             <th class="text-uppercase small fw-semibold px-3">Estado</th>
@@ -15,9 +14,7 @@
         @forelse ($bodegas as $bodega)
         <tr class="bg-white border-bottom {{ $bodega->estado === 'inactivo' ? 'opacity-50' : '' }}">
 
-            {{-- Columna ID --}}
-            <td class="fw-semibold">{{ $bodega->id }}</td>
-
+            {{-- Columna Referencia --}}
             <td class="fw-semibold text-start ps-3">
                 <i class="bi bi-tag-fill me-1" style="color:#2271B4;"></i>
                 {{ $bodega->referencia }}

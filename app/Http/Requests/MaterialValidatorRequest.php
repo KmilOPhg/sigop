@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class MaterialValidatorRequest extends FormRequest
 {
@@ -22,6 +23,7 @@ class MaterialValidatorRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'item' => 'required|string|max:255|' . Rule::unique('materiales', 'item_material')->ignore(optional($this->route('materiales'))->id),
             'nombre_material' => 'required|string|max:255',
             'unidad_medida' => 'required|string|max:255',
             //'estado' => 'required|string|in:activo,inactivo',
@@ -36,6 +38,8 @@ class MaterialValidatorRequest extends FormRequest
     public function messages(): array
     {
         return [
+            'item.required' => 'El item del material es obligatorio.',
+            'item.unique' => 'Ya existe un material con este item',
             'nombre_material.required' => 'El nombre del material es obligatorio.',
             'nombre_material.string' => 'El nombre del material debe ser una cadena de texto.',
             'nombre_material.max' => 'El nombre del material no debe exceder los 255 caracteres.',

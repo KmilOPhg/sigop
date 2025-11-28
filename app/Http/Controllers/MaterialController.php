@@ -6,6 +6,7 @@ use App\Http\Requests\MaterialValidatorRequest;
 use App\Models\Material;
 use App\Http\Repositories\MaterialRepository;
 use App\Http\Services\MaterialService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\View\Factory;
@@ -59,7 +60,7 @@ class MaterialController extends Controller
         return $this->materialService->actualizarMaterial($request, $material);
     }
 
-    public function inhabilitarMaterial(Request $request, Material $material)
+    public function inhabilitarMaterial(Request $request, Material $material): JsonResponse
     {
         return $this->materialService->inhabilitarMaterial($request, $material);
     }

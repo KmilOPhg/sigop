@@ -42,7 +42,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     Route::get('/materiales/crear', [MaterialController::class, 'crearMaterialForm'])->name('materiales.crear.form');
     Route::post('/materiales/crear/nuevo', [MaterialController::class, 'crearMaterial'])->name('materiales.crear.post');
     Route::get('/materiales/{material}/editar', [MaterialController::class, 'editarMaterial'])->name('materiales.editar');
-    Route::get('/materiales/{material}/actualizar', [MaterialController::class, 'actualizarMaterial'])->name('materiales.actualizar');
+    Route::put('/materiales/{material}/actualizar', [MaterialController::class, 'actualizarMaterial'])->name('materiales.actualizar');
     Route::put('/materiales/{material}/inhabilitar', [MaterialController::class, 'inhabilitarMaterial'])->name('materiales.inhabilitar');
 
     //Ruta bodegas
@@ -50,7 +50,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     Route::get('/bodegas/crear', [BodegaController::class, 'crearBodegaForm'])->name('bodegas.crear.form');
     Route::post('/bodegas/crear/nuevo', [BodegaController::class, 'crearBodega'])->name('bodegas.crear.post');
     Route::get('/bodegas/{bodega}/editar', [BodegaController::class, 'editarBodega'])->name('bodegas.editar');
-    Route::get('/bodegas/{bodega}/actualizar', [BodegaController::class, 'actualizarBodega'])->name('bodegas.actualizar');
+    Route::put('/bodegas/{bodega}/actualizar', [BodegaController::class, 'actualizarBodega'])->name('bodegas.actualizar');
     Route::put('/bodegas/{bodega}/inhabilitar', [BodegaController::class, 'inhabilitarBodega'])->name('bodegas.inhabilitar');
 });
 

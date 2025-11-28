@@ -16,8 +16,7 @@ class BodegaRepository
      */
     public function verBodega(string $estado) : LengthAwarePaginator
     {
-        return Bodega::with('inventarios')
-            ->where('estado', $estado)
+        return Bodega::where('estado', $estado)
             ->orderBy('created_at', 'desc')
             ->paginate(12);
     }

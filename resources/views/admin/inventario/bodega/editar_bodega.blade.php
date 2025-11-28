@@ -19,7 +19,7 @@
                         </div>
                     @endif
 
-                    <form action="{{ route('admin.bodegas.actualizar', $bodega) }}">
+                    <form action="{{ route('admin.bodegas.actualizar', $bodega) }}" method="POST">
                         @csrf
                         @method('PUT')
 

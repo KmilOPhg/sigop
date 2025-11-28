@@ -19,7 +19,7 @@
                         </div>
                     @endif
 
-                    <form action="{{ route('admin.materiales.actualizar', $material) }}">
+                    <form action="{{ route('admin.materiales.actualizar', $material) }}" method="POST">
                         @csrf
                         @method('PUT')
 
@@ -86,7 +86,6 @@
                                 <i class="bi bi-check-circle me-1"></i> Guardar Material
                             </button>
                         </div>
-
                     </form>
                 </div>
 
