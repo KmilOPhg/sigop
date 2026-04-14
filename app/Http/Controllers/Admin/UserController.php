@@ -15,12 +15,48 @@ use Spatie\Permission\Models\Role;
 class UserController extends Controller
 {
     /**
+     * Agrupa los permisos por módulo basándose en la última palabra del nombre.
+     */
+    private function permisosAgrupados(): array
+    {
+        $grupos = [
+            'Dashboard' => ['dashboard', 'reportes'],
+            'Usuarios'  => ['usuarios', 'roles'],
+            'Materiales' => ['materiales'],
+            'Bodegas'   => ['bodegas'],
+        ];
+
+        $permissions = Permission::all();
+        $agrupados = [];
+
+        foreach ($grupos as $grupo => $keywords) {
+            $agrupados[$grupo] = $permissions->filter(function ($p) use ($keywords) {
+                foreach ($keywords as $kw) {
+                    if (str_contains($p->name, $kw)) return true;
+                }
+                return false;
+            })->values();
+        }
+
+        // Permisos que no encajen en ningún grupo
+        $asignados = collect($agrupados)->flatten()->pluck('id');
+        $otros = $permissions->whereNotIn('id', $asignados);
+        if ($otros->isNotEmpty()) {
+            $agrupados['Otros'] = $otros->values();
+        }
+
+        return $agrupados;
+    }
+
+    /**
      * Display a listing of the resource.
      */
     public function verUsuarios(): Factory|View
     {
         $users = User::with('roles', 'permissions')->get();
-        return view('admin.user.index', compact('users'));
+        $roles = Role::all();
+        $permisosAgrupados = $this->permisosAgrupados();
+        return view('admin.user.index', compact('users', 'roles', 'permisosAgrupados'));
     }
 
     /**
@@ -29,9 +65,9 @@ class UserController extends Controller
     public function crearUsuarosForm(): Factory|View
     {
         $roles = Role::all();
-        $permissions = Permission::all();
+        $permisosAgrupados = $this->permisosAgrupados();
 
-        return view('admin.user.create', compact('roles', 'permissions'));
+        return view('admin.user.create', compact('roles', 'permisosAgrupados'));
     }
 
     /**
@@ -65,9 +101,9 @@ class UserController extends Controller
     public function editarUsuarios(User $user): Factory|View
     {
         $roles = Role::all();
-        $permissions = Permission::all();
+        $permisosAgrupados = $this->permisosAgrupados();
 
-        return view('admin.user.edit', compact('user', 'roles', 'permissions'));
+        return view('admin.user.edit', compact('user', 'roles', 'permisosAgrupados'));
     }
 
     /**

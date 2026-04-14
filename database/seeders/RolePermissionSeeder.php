@@ -14,48 +14,43 @@ class RolePermissionSeeder extends Seeder
      */
     public function run(): void
     {
-        //Roles
+        // Roles
         $adminRole = Role::create(['name' => 'admin']);
         $editorRole = Role::create(['name' => 'editor']);
 
-        //Permisos
-        // -- Permisos para categorías
-        $permissionIndexCategory = Permission::create(['name' => 'view categories']);
-        $permissionCreateCategory = Permission::create(['name' => 'create categories']);
-        $permissionEditCategory = Permission::create(['name' => 'edit categories']);
-        $permissionDeleteCategory = Permission::create(['name' => 'delete categories']);
+        // -- Permisos de Dashboard
+        Permission::create(['name' => 'ver dashboard']);
+        Permission::create(['name' => 'ver reportes']);
 
-        // -- Permisos para servicios
-        $permissionIndexService = Permission::create(['name' => 'view services']);
-        $permissionCreateService = Permission::create(['name' => 'create services']);
-        $permissionEditService = Permission::create(['name' => 'edit services']);
-        $permissionDeleteService = Permission::create(['name' => 'delete services']);
+        // -- Permisos de Usuarios
+        Permission::create(['name' => 'ver usuarios']);
+        Permission::create(['name' => 'crear usuarios']);
+        Permission::create(['name' => 'editar usuarios']);
+        Permission::create(['name' => 'eliminar usuarios']);
+        Permission::create(['name' => 'asignar roles']);
 
-        // -- Permisos para posts
-        $permissionIndexPost = Permission::create(['name' => 'view posts']);
-        $permissionCreatePost = Permission::create(['name' => 'create posts']);
-        $permissionEditPost = Permission::create(['name' => 'edit posts']);
-        $permissionDeletePost = Permission::create(['name' => 'delete posts']);
-        $permissionPublishPost = Permission::create(['name' => 'publish posts']);
+        // -- Permisos de Materiales
+        Permission::create(['name' => 'ver materiales']);
+        Permission::create(['name' => 'crear materiales']);
+        Permission::create(['name' => 'editar materiales']);
+        Permission::create(['name' => 'eliminar materiales']);
 
-        // -- Permisos para usuarios
-        $permissionIndexUser = Permission::create(['name' => 'view users']);
-        $permissionCreateUser = Permission::create(['name' => 'create users']);
-        $permissionEditUser = Permission::create(['name' => 'edit users']);
-        $permissionDeleteUser = Permission::create(['name' => 'delete users']);
-        $permissionAssignRoles = Permission::create(['name' => 'assign roles']);
-        $permissionsAssignPermissions = Permission::create(['name' => 'assign permissions']);
+        // -- Permisos de Bodegas
+        Permission::create(['name' => 'ver bodegas']);
+        Permission::create(['name' => 'crear bodegas']);
+        Permission::create(['name' => 'editar bodegas']);
+        Permission::create(['name' => 'eliminar bodegas']);
 
-        //Asignar permisos a roles
-        //Rol admin: Todos los permisos
+        // Rol admin: Todos los permisos
         $adminRole->givePermissionTo(Permission::all());
 
-        //Rol editor: Algunos permisos especificos
+        // Rol editor: Permisos de consulta y edición limitada
         $editorRole->givePermissionTo([
-            $permissionIndexCategory,
-            $permissionEditCategory,
-            $permissionIndexService,
-            $permissionEditService,
+            'ver dashboard',
+            'ver materiales',
+            'editar materiales',
+            'ver bodegas',
+            'editar bodegas',
         ]);
     }
 }

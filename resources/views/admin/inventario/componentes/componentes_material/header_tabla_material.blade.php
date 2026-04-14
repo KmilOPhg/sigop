@@ -1,33 +1,35 @@
-<div class="card border-0 shadow-lg rounded-4 overflow-hidden">
-    <div class="card-header d-flex justify-content-between align-items-center py-3 text-white"
-         style="background-color:#2271B4;">
-        <h4 class="mb-0 fw-bold d-flex align-items-center gap-2">
-            <i class="bi bi-box-seam"></i> Gestión de Materiales
-        </h4>
-
+{{-- Header --}}
+<div class="flex items-end justify-between">
+    <div>
+        <span class="text-xs font-bold text-primary/40 uppercase tracking-[0.2em]">Inventarios</span>
+        <h2 class="text-3xl font-bold tracking-tight text-on-surface mt-1">Gestión de Materiales</h2>
+    </div>
+    <div class="flex gap-3">
         @if($modo === 'activo')
             <a href="{{ route('admin.materiales.listar', 'inactivo') }}"
-               class="ajax-load btn btn-light btn-sm fw-semibold px-3 py-2 shadow-sm">
-                <i class="bi bi-eye-slash me-1"></i> Ver Inactivos
+               class="ajax-load px-4 py-2.5 bg-surface-container-high text-primary rounded-lg text-xs font-bold uppercase tracking-widest flex items-center gap-2 hover:bg-slate-200 transition-colors">
+                <span class="material-symbols-outlined text-sm">visibility_off</span>
+                Ver Inactivos
             </a>
         @else
             <a href="{{ route('admin.materiales.listar', 'activo') }}"
-               class="ajax-load btn btn-light btn-sm fw-semibold px-3 py-2 shadow-sm">
-                <i class="bi bi-eye me-1"></i> Ver Activos
+               class="ajax-load px-4 py-2.5 bg-surface-container-high text-primary rounded-lg text-xs font-bold uppercase tracking-widest flex items-center gap-2 hover:bg-slate-200 transition-colors">
+                <span class="material-symbols-outlined text-sm">visibility</span>
+                Ver Activos
             </a>
         @endif
 
         <a href="{{ route('admin.materiales.crear.form') }}"
-           class="btn btn-light btn-sm fw-semibold px-3 py-2 shadow-sm">
-            <i class="bi bi-plus-circle me-1"></i> Nuevo Material
+           class="px-5 py-2.5 bg-gradient-to-r from-primary to-primary-container text-white rounded-lg text-xs font-bold uppercase tracking-widest shadow-lg shadow-blue-900/20 flex items-center gap-2">
+            <span class="material-symbols-outlined text-sm">add</span>
+            Nuevo Material
         </a>
     </div>
+</div>
 
-    <div class="card-body bg-light">
-        @include('partials.errorsuccess')
+@include('partials.errorsuccess')
 
-        <div id="contenedor_tabla_materiales">
-            @include('admin.inventario.componentes.componentes_material.tabla_material')
-        </div>
-    </div>
+{{-- Table --}}
+<div id="contenedor_tabla_materiales">
+    @include('admin.inventario.componentes.componentes_material.tabla_material')
 </div>

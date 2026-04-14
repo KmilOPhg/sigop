@@ -4,10 +4,13 @@ import Swal from "sweetalert2";
 //Aplicación de una sola página
 document.addEventListener("DOMContentLoaded", () => {
 
+    const pageEl = document.querySelector('.page');
+    if (!pageEl) return;
+
     const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
     //Agarrar la seccion en la que se está
-    const seccion = document.querySelector('.page').dataset.seccion;
+    const seccion = pageEl.dataset.seccion;
     console.log('Sección detectada', seccion);
 
     // Detectar automáticamente cuál contenedor existe
