@@ -1,9 +1,21 @@
+import { sigopConfirm, sigopToastError, sigopToastSuccess } from "../lib/swalTheme.js";
+
 document.addEventListener("DOMContentLoaded", function() {
     const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
     //Funcion para cambiar el estado del usuario
     async function cambiarEstado(userId, nuevoEstado, button) {
         try {
+            const confirm = await sigopConfirm({
+                title: "Cambiar estado",
+                text: `¿Deseas cambiar el estado a ${nuevoEstado}?`,
+                icon: "warning",
+                confirmButtonText: "Sí, cambiar",
+                cancelButtonText: "Cancelar",
+            });
+
+            if (!confirm.isConfirmed) return;
+
             const response = await fetch(`/admin/users/${userId}/desactivar`, {
                 method: 'PUT',
                 headers: {
@@ -28,12 +40,14 @@ document.addEventListener("DOMContentLoaded", function() {
                         fila.classList.remove('opacity-50');
                     }
                 }
+
+                void sigopToastSuccess(`Estado actualizado a «${nuevoEstado}».`);
             } else {
-                alert('Error al cambiar el estado del usuario.');
+                void sigopToastError("No se pudo cambiar el estado del usuario.");
             }
         } catch (error) {
             console.error('Error:', error);
-            alert('Error al cambiar el estado del usuario.');
+            void sigopToastError("No se pudo cambiar el estado del usuario.");
         }
     }
 

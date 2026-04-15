@@ -1,4 +1,4 @@
-import Swal from "sweetalert2";
+import { sigopConfirm, sigopToastError, sigopToastSuccess } from "./lib/swalTheme.js";
 
 //Single Page Application
 //Aplicación de una sola página
@@ -20,11 +20,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     async function cambiarEstado(id, nuevoEstado, seccion, button) {
         try {
-            const confirm = await Swal.fire({
+            const confirm = await sigopConfirm({
                 title: "Cambiar estado",
                 text: `¿Deseas cambiar el estado a ${nuevoEstado}?`,
                 icon: "warning",
-                showCancelButton: true,
                 confirmButtonText: "Sí, cambiar",
                 cancelButtonText: "Cancelar",
             });
@@ -42,24 +41,17 @@ document.addEventListener("DOMContentLoaded", () => {
             console.log('Ruta: ', res.url);
 
             if (!res.ok) {
-                alert("Error al cambiar estado.");
+                await sigopToastError("No se pudo cambiar el estado. Intenta de nuevo.");
                 return;
             }
 
             button.closest("tr")?.remove();
 
-            await Swal.fire({
-                icon: "success",
-                title: `Estado cambiado a ${nuevoEstado}`,
-                toast: true,
-                position: "bottom-end",
-                timer: 2000,
-                showConfirmButton: false,
-            });
+            await sigopToastSuccess(`Estado actualizado a «${nuevoEstado}».`);
 
         } catch (e) {
             console.error(e);
-            alert("Error al cambiar estado.");
+            await sigopToastError("No se pudo cambiar el estado. Intenta de nuevo.");
         }
     }
 
@@ -87,9 +79,17 @@ document.addEventListener("DOMContentLoaded", () => {
                         if(container) container.innerHTML = html;
                     }
 
-                    // ajax-load = recarga toda la card (vista completa)
+                    // ajax-load = recarga la seccion de la pagina
                     if (link.classList.contains("ajax-load")) {
-                        document.querySelector(".card").innerHTML = html;
+                        const pageContainer = document.querySelector(".page");
+                        const cardContainer = document.querySelector(".card");
+
+                        if (pageContainer) {
+                            pageContainer.innerHTML = html;
+                        } else if (cardContainer) {
+                            // Compatibilidad con vistas antiguas.
+                            cardContainer.innerHTML = html;
+                        }
                     }
                 });
 

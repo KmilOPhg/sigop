@@ -1,5 +1,5 @@
 import * as echarts from "echarts";
-import Swal from "sweetalert2";
+import { sigopSwal } from "./lib/swalTheme.js";
 
 function verBodegasPorReferencia(referencia) {
     console.log("Buscando bodegas para:", referencia);
@@ -9,18 +9,19 @@ function verBodegasPorReferencia(referencia) {
         .then(registros => {
 
             let html = registros.map(b =>
-                `<div style="text-align:left; margin-bottom:10px;">
-                    <strong>Descripción:</strong> ${b.descripcion}<br>
-                    <strong>Referencia:</strong> ${b.referencia}<br>
-                    <strong>Estado:</strong> ${b.estado}
+                `<div class="sigop-swal-detail">
+                    <strong>Descripción</strong> ${b.descripcion}<br>
+                    <strong>Referencia</strong> ${b.referencia}<br>
+                    <strong>Estado</strong> ${b.estado}
                 </div>`
-            ).join("<hr>");
+            ).join("");
 
-            Swal.fire({
+            sigopSwal.fire({
                 title: `Bodegas con referencia ${referencia}`,
                 html: html,
                 width: 600,
                 confirmButtonText: "Cerrar",
+                showCloseButton: true,
             });
         });
 }
@@ -32,19 +33,20 @@ function verMaterialesPorItem(item) {
         .then(registros => {
 
             let html = registros.map(m =>
-                `<div style="text-align:left; margin-bottom:10px;">
-                    <strong>Nombre:</strong> ${m.nombre_material}<br>
-                    <strong>Item:</strong> ${m.item_material}<br>
-                    <strong>Unidad:</strong> ${m.unidad_medida}<br>
-                    <strong>Estado:</strong> ${m.estado}
+                `<div class="sigop-swal-detail">
+                    <strong>Nombre</strong> ${m.nombre_material}<br>
+                    <strong>Ítem</strong> ${m.item_material}<br>
+                    <strong>Unidad</strong> ${m.unidad_medida}<br>
+                    <strong>Estado</strong> ${m.estado}
                 </div>`
-            ).join("<hr>");
+            ).join("");
 
-            Swal.fire({
+            sigopSwal.fire({
                 title: `Materiales del ítem ${item}`,
                 html: html,
                 width: 600,
                 confirmButtonText: "Cerrar",
+                showCloseButton: true,
             });
         });
 }
@@ -76,28 +78,50 @@ document.addEventListener("DOMContentLoaded", () => {
                 const chart = echarts.init(dom);
 
                 chart.setOption({
-                    title: { text: titulo, left: "center" },
-                    tooltip: { trigger: "item" },
-                    legend: { bottom: 0 },
-                    series: [{
-                        type: "pie",
-                        radius: "70%",
-                        data: [
-                            {
-                                value: activos,
-                                name: "Activos",
-                                itemStyle: { color: "rgba(0,200,0,0.9)" }
+                    tooltip: {
+                        trigger: 'item'
+                    },
+                    legend: {
+                        top: '5%',
+                        left: 'center'
+                    },
+                    series: [
+                        {
+                            name: titulo,
+                            type: 'pie',
+                            radius: ['40%', '70%'],
+                            avoidLabelOverlap: false,
+                            label: {
+                                show: false,
+                                position: 'center'
                             },
-                            {
-                                value: inactivos,
-                                name: "Inactivos",
-                                itemStyle: { color: "rgba(255,0,0,0.3)" }
-                            }
-                        ],
-                        label: { fontSize: 12 }
-                    }]
+                            emphasis: {
+                                label: {
+                                    show: true,
+                                    fontSize: 28,
+                                    fontWeight: 'bold'
+                                }
+                            },
+                            labelLine: {
+                                show: false
+                            },
+                            data: [
+                                {
+                                    value: activos,
+                                    name: 'Activos',
+                                    itemStyle: { color: "rgba(0,200,0,0.9)" }
+                                },
+                                {
+                                    value: inactivos,
+                                    name: 'Inactivos',
+                                    itemStyle: { color: "rgba(255,0,0,0.3)" }
+                                }
+                            ]
+                        }
+                    ]
                 });
             }
+
 
             //Renderizar los graficos de torta
             renderPie("chartBodegasEstado", data.totales.bodegas.activas, data.totales.bodegas.inactivas, "Bodegas");

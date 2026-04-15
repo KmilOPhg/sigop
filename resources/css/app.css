@@ -43,3 +43,175 @@
 
     --color-sidebar: rgba(14, 28, 43, 0.95);
 }
+
+/* Asegura feedback visual en todos los controles interactivos. */
+button:not(:disabled),
+input[type='button']:not(:disabled),
+input[type='submit']:not(:disabled),
+input[type='reset']:not(:disabled),
+a[href],
+summary,
+[role='button'],
+[role='tab'],
+[onclick] {
+    cursor: pointer;
+}
+
+button:disabled,
+input:disabled,
+[aria-disabled='true'] {
+    cursor: not-allowed;
+}
+
+/* --------------------------------------------------------------------------
+   SweetAlert2 — tema SIGOP (superficies, tipografía, botones como la app)
+   -------------------------------------------------------------------------- */
+.sigop-swal-popup.swal2-popup {
+    font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+    background: var(--color-surface-container-lowest);
+    color: var(--color-on-surface);
+    border-radius: 0.75rem;
+    border: 1px solid color-mix(in srgb, var(--color-outline-variant) 65%, transparent);
+    padding: 1.5rem 1.25rem 1.25rem;
+    box-shadow: 0 25px 50px -12px rgba(14, 28, 43, 0.18);
+}
+
+.sigop-swal-title.swal2-title {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    letter-spacing: -0.02em;
+}
+
+.sigop-swal-html.swal2-html-container {
+    margin: 0.75rem 0 0;
+    font-size: 0.8125rem;
+    line-height: 1.55;
+    color: var(--color-on-surface-variant);
+}
+
+.sigop-swal-actions.swal2-actions {
+    margin: 1.25rem 0 0;
+    gap: 0.5rem;
+}
+
+.sigop-swal-confirm.swal2-confirm {
+    border-radius: 0.5rem;
+    padding: 0.625rem 1.25rem;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    background: linear-gradient(
+        90deg,
+        var(--color-primary),
+        var(--color-primary-container)
+    );
+    color: var(--color-on-primary) !important;
+    border: none;
+    box-shadow: 0 4px 14px rgba(14, 28, 43, 0.25);
+    cursor: pointer;
+}
+
+.sigop-swal-confirm.swal2-confirm:hover {
+    filter: brightness(1.06);
+}
+
+.sigop-swal-confirm.swal2-confirm:focus {
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-secondary) 40%, transparent);
+}
+
+.sigop-swal-cancel.swal2-cancel {
+    border-radius: 0.5rem;
+    padding: 0.625rem 1.25rem;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    background: var(--color-surface-container-high);
+    color: var(--color-primary) !important;
+    border: 1px solid color-mix(in srgb, var(--color-outline-variant) 80%, transparent);
+    cursor: pointer;
+}
+
+.sigop-swal-cancel.swal2-cancel:hover {
+    background: var(--color-surface-container);
+}
+
+/* Iconos dentro del modal */
+.sigop-swal-popup .swal2-icon.swal2-warning {
+    border-color: var(--color-secondary);
+    color: var(--color-secondary);
+}
+
+.sigop-swal-popup .swal2-icon.swal2-question {
+    border-color: var(--color-secondary);
+    color: var(--color-secondary);
+}
+
+.sigop-swal-popup .swal2-icon.swal2-success {
+    border-color: #2e7d32;
+    color: #2e7d32;
+}
+
+.sigop-swal-popup .swal2-icon.swal2-error {
+    border-color: var(--color-error);
+    color: var(--color-error);
+}
+
+.sigop-swal-popup .swal2-close {
+    color: var(--color-on-surface-variant);
+    transition: color 0.15s ease;
+}
+
+.sigop-swal-popup .swal2-close:hover {
+    color: var(--color-primary);
+}
+
+/* Toasts */
+.swal2-popup.sigop-swal-toast {
+    font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+    background: var(--color-surface-container-lowest) !important;
+    color: var(--color-on-surface) !important;
+    border-radius: 0.75rem !important;
+    border: 1px solid color-mix(in srgb, var(--color-outline-variant) 60%, transparent) !important;
+    box-shadow: 0 10px 40px rgba(14, 28, 43, 0.12) !important;
+    padding: 0.875rem 1rem !important;
+}
+
+.swal2-popup.sigop-swal-toast .swal2-title {
+    font-size: 0.8125rem !important;
+    font-weight: 600 !important;
+    color: var(--color-on-surface) !important;
+    padding: 0 0.25rem !important;
+}
+
+.swal2-popup.sigop-swal-toast .swal2-timer-progress-bar {
+    background: var(--color-primary) !important;
+}
+
+/* Bloques de detalle (p. ej. listados en dashboard) */
+.sigop-swal-detail {
+    text-align: left;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--color-outline-variant);
+    font-size: 0.75rem;
+    line-height: 1.55;
+    color: var(--color-on-surface-variant);
+}
+
+.sigop-swal-detail:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.sigop-swal-detail strong {
+    color: var(--color-primary);
+    font-weight: 700;
+    font-size: 0.625rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-right: 0.35rem;
+}
