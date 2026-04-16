@@ -18,7 +18,8 @@ class BodegaRepository
     {
         return Bodega::where('estado', $estado)
             ->orderBy('created_at', 'desc')
-            ->paginate(12);
+            ->paginate(12)
+            ->withQueryString();
     }
 
     /**

@@ -35,62 +35,8 @@
 
         @include('partials.errorsuccess')
 
-        {{-- Table --}}
-        <div class="bg-surface-container-low rounded-xl overflow-hidden">
-            <div class="overflow-x-auto">
-                <table class="w-full text-left border-collapse">
-                    <thead>
-                    <tr class="bg-surface-container-high/50">
-                        <th class="px-6 py-4 text-[10px] font-black uppercase text-slate-500 tracking-tighter">Item</th>
-                        <th class="px-6 py-4 text-[10px] font-black uppercase text-slate-500 tracking-tighter">Material</th>
-                        <th class="px-6 py-4 text-[10px] font-black uppercase text-slate-500 tracking-tighter">Unidad</th>
-                        <th class="px-6 py-4 text-[10px] font-black uppercase text-slate-500 tracking-tighter">Estado</th>
-                        <th class="px-6 py-4 text-[10px] font-black uppercase text-slate-500 tracking-tighter">Editado por</th>
-                        <th class="px-6 py-4 text-[10px] font-black uppercase text-slate-500 tracking-tighter text-right">Acciones</th>
-                    </tr>
-                    </thead>
-                    <tbody class="divide-y divide-slate-200/40">
-                    @forelse ($materiales as $material)
-                        <tr class="hover:bg-surface-container-lowest transition-colors {{ $material->estado === 'inactivo' ? 'opacity-50' : '' }}">
-                            <td class="px-6 py-5"><span class="text-xs font-bold text-primary">#{{ $material->item_material }}</span></td>
-                            <td class="px-6 py-5">
-                                <div class="flex items-center gap-2">
-                                    <span class="material-symbols-outlined text-secondary text-sm">category</span>
-                                    <span class="text-xs font-semibold">{{ $material->nombre_material }}</span>
-                                </div>
-                            </td>
-                            <td class="px-6 py-5">
-                                <span class="px-2 py-1 bg-secondary-container text-on-secondary-container text-[10px] font-bold rounded">{{ $material->unidad_medida }}</span>
-                            </td>
-                            <td class="px-6 py-5">
-                                <button class="toggleEstadoBtn px-2 py-1 text-[10px] font-bold rounded {{ $material->estado === 'activo' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700' }}"
-                                        data-id="{{ $material->id }}" data-estado="{{ $material->estado === 'activo' ? 'inactivo' : 'activo' }}">
-                                    {{ ucfirst($material->estado) }}
-                                </button>
-                            </td>
-                            <td class="px-6 py-5"><span class="text-xs text-slate-500">{{ $material->user?->name ?? 'N/A' }}</span></td>
-                            <td class="px-6 py-5 text-right">
-                                <button @click="editId = {{ $material->id }}; showEdit = true"
-                                        class="inline-flex items-center gap-1 px-3 py-1.5 bg-surface-container-high text-primary text-[10px] font-bold uppercase tracking-widest rounded hover:bg-blue-50 transition-colors">
-                                    <span class="material-symbols-outlined text-sm">edit</span>
-                                    Editar
-                                </button>
-                            </td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="6" class="px-6 py-12 text-center text-slate-400">
-                                <span class="material-symbols-outlined text-3xl mb-2 block">inbox</span>
-                                No hay materiales registrados.
-                            </td>
-                        </tr>
-                    @endforelse
-                    </tbody>
-                </table>
-            </div>
-            @if($materiales->hasPages())
-                <div class="px-6 py-4 border-t border-slate-200/40">{{ $materiales->links() }}</div>
-            @endif
+        <div id="contenedor_tabla_materiales">
+            @include('admin.inventario.componentes.componentes_material.panel_materiales_list')
         </div>
 
         {{-- Modal Crear Material --}}
@@ -136,47 +82,5 @@
                 </div>
             </div>
         </div>
-
-        {{-- Modales Editar Material --}}
-        @foreach($materiales as $material)
-            <div x-show="showEdit && editId === {{ $material->id }}" x-transition.opacity class="fixed inset-0 z-50" style="display:none">
-                <div class="fixed inset-0 bg-black/50 backdrop-blur-sm" @click="showEdit = false"></div>
-                <div class="fixed inset-0 overflow-y-auto">
-                    <div class="flex min-h-full items-center justify-center p-8">
-                        <div class="relative bg-white rounded-xl shadow-2xl w-full max-w-lg z-10" x-transition.scale.95>
-                    <div class="px-6 py-4 border-b border-slate-200/50 flex items-center justify-between">
-                        <div>
-                            <h3 class="text-lg font-bold text-on-surface">Editar Material</h3>
-                            <p class="text-[10px] text-slate-400">#{{ $material->item_material }} &mdash; {{ $material->nombre_material }}</p>
-                        </div>
-                        <button @click="showEdit = false" class="p-1 text-slate-400 hover:text-slate-600"><span class="material-symbols-outlined">close</span></button>
-                    </div>
-                    <form action="{{ route('admin.materiales.actualizar', $material) }}" method="POST" class="p-6 space-y-5">
-                        @csrf
-                        @method('PUT')
-                        <div>
-                            <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Nombre del material</label>
-                            <input type="text" name="nombre_material" value="{{ $material->nombre_material }}" required class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-xs focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Unidad de medida</label>
-                            <select name="unidad_medida" required class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-xs focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all">
-                                @foreach(['UND','KLS','MTS','LAM','PAR','DCM','LTS','CM','RLL','GLS','LAT','LBS','BTS','MILFS','GRS','DOC','GRAM','GARR'] as $u)
-                                    <option value="{{ $u }}" {{ $material->unidad_medida == $u ? 'selected' : '' }}>{{ $u }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="flex justify-end gap-3 pt-4 border-t border-slate-200/50">
-                            <button type="button" @click="showEdit = false" class="px-5 py-2.5 bg-surface-container-high text-primary rounded-lg text-xs font-bold uppercase tracking-widest hover:bg-slate-200 transition-colors">Cancelar</button>
-                            <button type="submit" class="px-5 py-2.5 bg-gradient-to-r from-primary to-primary-container text-white rounded-lg text-xs font-bold uppercase tracking-widest shadow-lg shadow-blue-900/20 flex items-center gap-2">
-                                <span class="material-symbols-outlined text-sm">check_circle</span> Actualizar
-                            </button>
-                        </div>
-                    </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        @endforeach
     </div>
 @endsection

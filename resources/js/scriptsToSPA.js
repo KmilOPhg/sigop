@@ -61,7 +61,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // --------------------
         // AJAX LOAD / PAGINACIÓN
         // --------------------
-        const link = e.target.closest("a.ajax-load, a.page-link");
+        const link = e.target.closest("a.ajax-load, a.sigop-ajax-page");
         if (link) {
             e.preventDefault();
 
@@ -70,13 +70,24 @@ document.addEventListener("DOMContentLoaded", () => {
                     "X-Requested-With": "XMLHttpRequest"
                 }
             })
-                .then(r => r.text())
-                .then(html => {
-                    // page-link = solo recarga la tabla
-                    if (link.classList.contains("page-link")) {
+                .then((r) => {
+                    if (!r.ok) {
+                        throw new Error("Respuesta no OK");
+                    }
+                    return r.text();
+                })
+                .then((html) => {
+                    // Paginación: solo recarga tabla + modales de la página actual
+                    if (link.classList.contains("sigop-ajax-page")) {
                         const container = getTableContainer();
 
-                        if(container) container.innerHTML = html;
+                        if (container) {
+                            container.innerHTML = html;
+                            if (window.Alpine?.initTree) {
+                                window.Alpine.initTree(container);
+                            }
+                            container.scrollIntoView({ behavior: "smooth", block: "nearest" });
+                        }
                     }
 
                     // ajax-load = recarga la seccion de la pagina
@@ -86,11 +97,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
                         if (pageContainer) {
                             pageContainer.innerHTML = html;
+                            if (window.Alpine?.initTree) {
+                                window.Alpine.initTree(pageContainer);
+                            }
                         } else if (cardContainer) {
-                            // Compatibilidad con vistas antiguas.
                             cardContainer.innerHTML = html;
+                            if (window.Alpine?.initTree) {
+                                window.Alpine.initTree(cardContainer);
+                            }
                         }
                     }
+                })
+                .catch(async () => {
+                    await sigopToastError("No se pudo cargar el contenido.");
                 });
 
             return;

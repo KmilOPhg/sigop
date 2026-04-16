@@ -22,11 +22,23 @@ class MaterialValidatorRequest extends FormRequest
      */
     public function rules(): array
     {
+        // Actualizar: el ítem no se edita en el formulario (se mantiene en BD).
+        if ($this->routeIs('admin.materiales.actualizar')) {
+            return [
+                'nombre_material' => 'required|string|max:50',
+                'unidad_medida' => 'required|string|max:5',
+            ];
+        }
+
         return [
-            'item' => 'required|string|max:255|' . Rule::unique('materiales', 'item_material')->ignore(optional($this->route('materiales'))->id),
-            'nombre_material' => 'required|string|max:255',
-            'unidad_medida' => 'required|string|max:255',
-            //'estado' => 'required|string|in:activo,inactivo',
+            'item' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('materiales', 'item_material'),
+            ],
+            'nombre_material' => 'required|string|max:50',
+            'unidad_medida' => 'required|string|max:5',
         ];
     }
 
@@ -42,10 +54,10 @@ class MaterialValidatorRequest extends FormRequest
             'item.unique' => 'Ya existe un material con este item',
             'nombre_material.required' => 'El nombre del material es obligatorio.',
             'nombre_material.string' => 'El nombre del material debe ser una cadena de texto.',
-            'nombre_material.max' => 'El nombre del material no debe exceder los 255 caracteres.',
+            'nombre_material.max' => 'El nombre del material no debe exceder los 50 caracteres.',
             'unidad_medida.required' => 'La unidad de medida es obligatoria.',
             'unidad_medida.string' => 'La unidad de medida debe ser una cadena de texto.',
-            'unidad_medida.max' => 'La unidad de medida no debe exceder los 255 caracteres.',
+            'unidad_medida.max' => 'La unidad de medida no debe exceder los 5 caracteres.',
             'estado.required' => 'El estado es obligatorio.',
             'estado.in' => 'El estado debe ser "activo" o "inactivo".',
         ];
